@@ -1,4 +1,80 @@
 .dm-main {
     width: 240px;
-    background-color: grey;
+    height: 100vh;
+    background-color: #2F3136;
+    color: white;
+}
+
+.dm-searchBar {
+    height: 50px;
+    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.dm-allUsers {
+    overflow: hidden scroll;
+    max-height: calc(100% - 102px);
+}
+
+.dm-newMsg {
+    display: flex;
+    padding: 18px 8px 4px 18px;
+}
+
+.dm-convo {
+    display: flex;
+    align-items: center;
+    padding: 3px 8px;
+}
+
+.dm-user {
+    background-color: rgb(41,43,47);
+    display: flex;
+    height: 52px;
+    padding: 0 8px;
+    align-items: center;
+    position: sticky;
+}
+
+.dm-icon {
+    background-color: aqua;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px ;
+}
+
+.dm-userAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px ;
+}
+
+.dm-userCreds {
+    margin-right: 4px;
+    width: 84px;
+}
+
+.dm-userIcons {
+    width: 96px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dm-oneUserIcon {
+    background-color: black;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dm-oneUserIconImage {
+    background-color: red;
+    width: 20px;
+    height: 20px;
 }

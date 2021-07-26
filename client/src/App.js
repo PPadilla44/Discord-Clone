@@ -1,7 +1,7 @@
 import React from 'react';
-import DMs from './components/DMs';
-import Chat from './components/Chat';
-import Icons from './components/Icons';
+import DMs from './views/DMs';
+import Chat from './views/Chat';
+import Icons from './views/Icons';
 import "./App.css"
 
 function App() {
