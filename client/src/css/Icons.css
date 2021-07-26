@@ -1,0 +1,10 @@
+.icons-main {
+    width: 72px;
+    background-color: red;
+}
+
+button {
+    width: 45px;
+    margin: 5px 8px;
+    border-radius: 100%;
+}
