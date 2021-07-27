@@ -1,22 +1,21 @@
 import React from 'react';
-import DMs from './views/DMs';
-import Chat from './views/Chat';
-import Icons from './views/Icons';
 import "./App.css"
-import Router from "@reach/router";
+import {Redirect, Router} from "@reach/router";
+import Main from "./views/Main"
 
-
+// /groupId/chatId
 
 function App() {
 
-
   return (
-    <div className="App">
-      <Icons/>
-      <DMs/>
-      <Chat/>
 
-    </div>
+    <Router className="App">
+        <Redirect from="/channels/" to="/channels/@me" noThrow="true" />
+        <Main path="/channels/:groupId/:chatId"/>
+        <Main path="/channels/:groupId"/>
+
+    </Router>
+
   );
 }
 

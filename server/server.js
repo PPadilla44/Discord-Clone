@@ -11,7 +11,7 @@ const io = require('socket.io')(server, {cors : true});
 io.on('connection', socket => {
 
     // socket.on('join', data => {
-    //     console.log(data);
+    //     socket.emit('')
     // })
 
 
