@@ -173,3 +173,16 @@
 .DMtooltip:hover .DMtooltiptext {
     visibility: visible;
 }
+
+.dm-convotooltipx {
+    visibility: hidden;
+    color: rgb(189, 189, 189);
+}
+
+.dm-convotooltip:hover .dm-convotooltipx {
+    visibility: visible;
+}
+
+.dm-convotooltipx:hover {
+    color:white;
+}
