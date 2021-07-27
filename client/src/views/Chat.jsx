@@ -32,6 +32,19 @@ const Chat = (props) => {
             </div>
             <div className="chatSeperator" >
                 <span className="chatDate">July 23, 2021</span>
+            </div>
+            <div className="messageContainer">
+                <div className="chatContents">
+                    <img src="https://cdn.discordapp.com/avatars/537805209460539428/91a36ff715aea2eb46c7e10dd4e832ac.png?size=128" className="avatar" />
+                    <h2 className="ChatMessageHeader">
+                        <span className="ChatMessageHeaderUserName">Famish</span>
+                        <span className="ChatMessageHeaderTimestamp">07/23/2021</span>
+                    </h2>
+                    <div className="ChatMessageContent">Im a tiny kitty meow meow</div>
+                </div>
+            </div>
+            <div className="chatSeperator" >
+                <span className="chatDate">July 23, 2021</span>
             </div>            
             <MessageInput/>
         </div>
@@ -39,7 +52,3 @@ const Chat = (props) => {
 }
 
 export default Chat;
-
-// aight monkey brain sam you just type rafce and then press enter
-
-
