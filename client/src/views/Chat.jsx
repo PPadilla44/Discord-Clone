@@ -32,7 +32,7 @@ const Chat = (props) => {
             </div>
             <div className="chatSeperator" >
                 <span className="chatDate">July 23, 2021</span>
-            </div>
+            </div>            
             <MessageInput/>
         </div>
     )

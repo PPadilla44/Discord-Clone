@@ -12,7 +12,8 @@ const DMsSearch = (props) => {
             <form>
                 <input type="text"
                 placeholder="Find or Start a conversation"
-                style={{width: "220px"}} />
+                style={{width: "220px"}}
+                className="dm-Search" />
             </form>
 
         </div>
