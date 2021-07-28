@@ -8,7 +8,14 @@ module.exports = {
         const user = new User(req.body);
 
         user.save().then(() => {
-                res.json({ msg: "success!", user: user });
+                res.cookie(
+                    "usertoken",
+                    jwt.sign({ _id: user._id }, process.env.JWT_SECRET),
+                    {
+                        httpOnly: true,
+                    }
+                )
+                .json({ msg: "success!" });
             })
             .catch((err) => res.status(400).json(err));
     },
@@ -19,8 +26,12 @@ module.exports = {
                 if (user === null) {
                     res.status(400).json({ msg: "invalid login attempt" });
                 } else {
-                    bcrypt.compare(req.body.password, user.password).then((passwordIsValid) => {
-                            if (passwordIsValid) {res.cookie(
+                    bcrypt
+                        .compare(req.body.password, user.password)
+                        .then((passwordIsValid) => {
+                            if (passwordIsValid) {
+
+                                res.cookie(
                                         "usertoken",
                                         jwt.sign({ _id: user._id }, process.env.JWT_SECRET),
                                         {
@@ -32,16 +43,17 @@ module.exports = {
                                 res.status(400).json({ msg: "invalid login attempt" });
                             }
                         })
-                        .catch((err) =>
-                            res.status(400).json({ msg: "invalid login attempt" })
-                        );
+                        .catch((err) => {
+                            res.status(400).json({ msg: "invalid login attempt" });
+                        });
                 }
             })
             .catch((err) => res.json(err));
     },
 
     logout: (req, res) => {
-        res.cookie("usertoken", jwt.sign({ _id: "" }, process.env.JWT_SECRET), {
+        res
+            .cookie("usertoken", jwt.sign({ _id: "" }, process.env.JWT_SECRET), {
                 httpOnly: true,
                 maxAge: 0,
             })

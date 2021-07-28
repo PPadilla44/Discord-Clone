@@ -1,20 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import "./App.css"
-import {Redirect, Router} from "@reach/router";
+import { Router, Redirect, navigate } from "@reach/router";
 import Main from "./views/Main"
 import LoginReg from "./views/LoginReg"
+import axios from "axios";
+
 
 // /groupId/chatId
 
 function App() {
 
+
+  const [loaded, setLoaded] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/users/loggedin`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setLoaded(true)
+        setIsLoggedIn(true)
+      })
+      .catch((err) => {
+        setLoaded(true)
+        setIsLoggedIn(false)
+      });
+  }, []);
+
+
   return (
 
     <Router className="App">
-        <Redirect from="/channels/" to="/channels/@me" noThrow="true" />
-        <Main path="/channels/:groupId/:chatId"/>
-        <Main path="/channels/:groupId"/>
-        <LoginReg path ="/login"/>
+      {loaded &&
+        <>
+          <Redirect from="/channels/" to="/channels/@me" noThrow="true" />
+          <Main isLoggedIn={isLoggedIn}  path="/channels/:groupId/:chatId" />
+          <Main isLoggedIn={isLoggedIn} path="/channels/:groupId" />
+          <LoginReg setLoggedIn={setIsLoggedIn} path="/login" />
+        </>
+      }
+
 
     </Router>
 

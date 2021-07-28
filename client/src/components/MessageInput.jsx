@@ -10,7 +10,8 @@ const MessageInput = (props) => {
     const [contents, setContents] = useState("");
     
     const chatId = props.chatId;
-    const senderUserName = props.user;
+    // const senderUserName = props.user.userName;
+    const senderUserName = "BIG DOG"
 
     const sendMessage = (e) => {
         e.preventDefault();

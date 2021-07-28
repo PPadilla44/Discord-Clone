@@ -1,0 +1,115 @@
+.loginPage {
+    margin: auto;
+    height: fit-content;
+    width: fit-content;
+    align-content: center;
+    color: white;
+    background-color: rgb(54, 57, 63);
+    border-radius: 2%;
+    border: none;
+    padding: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    opacity: 0;
+    overflow: hidden;
+    transform: translate3d(0, 500px, 0);
+    animation: arrive 500ms ease-in-out 0.4s forwards;
+    box-shadow: 0px 0px 15px 2px black;
+}
+
+.wrapper {
+    margin: auto;
+    height: 100vh;
+    width: 100vw;
+}
+
+body {
+    animation: BGtransition 10s ease infinite;
+    background-size: 200% 100% !important;
+    transform: translate3d(0, 0, 0);
+    background: linear-gradient(45deg, #000000 10%, rgb(69, 28, 146) 90%);
+}
+
+.signIn {
+    padding: 20px;
+}
+
+.register {
+    padding: 20px;
+}
+.wrapper {
+    display: flex;
+}
+
+.h1 {
+    padding-bottom: 20px;
+    font-family: 'Lobster Two', cursive;
+    font-size: 2.5rem;
+}
+
+.loginPage label {
+    font-family: 'Roboto', sans-serif;
+    font-size: larger;
+}
+
+.button {
+    font-size: large;
+    margin-top: 20px;
+    width: 170px;
+    border: 1px solid black;
+    border-radius: 35px;
+    background-color: rgb(37, 37, 37);
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.25s linear;
+    font-family: 'Roboto', sans-serif;
+}
+
+.button:hover {
+    color: rgb(168, 168, 168);
+    background-color: rgb(85, 85, 85);
+    box-shadow: 0 0 10px black;
+}
+
+.signInForm input[type=text], input[type=password], input[type=email] {
+    padding: 5px 12px;
+    margin: 5px 0px;
+    box-sizing: border-box;
+    border: 2px solid rgb(114, 106, 187);
+    border-radius: 4px;
+    background-color: rgb(96, 95, 100);
+    color: white;
+}
+
+
+
+
+/* .................KeyFrames........................... */
+
+
+@keyframes arrive {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 50px, 0);
+    }
+    
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes BGtransition {
+    0% {
+        background-position: 0 0
+    }
+
+    50% {
+        background-position: 100% 0
+    }
+
+    100% {
+        background-position: 0 0
+    }
+}

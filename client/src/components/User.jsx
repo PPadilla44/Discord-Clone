@@ -5,13 +5,19 @@ import "../css/DMs.css";
 const User = (props) => {
 
 
+    const { user } = props;
+    // const { _id } = user;
+
+    // console.log(user);
 
     return (
         <div className="dm-user">
             <img className="dm-userAvatar" src="https://cdn.discordapp.com/avatars/537805209460539428/91a36ff715aea2eb46c7e10dd4e832ac.png?size=128" alt="profpic" />
             <div className="dm-userCreds">
                 <p>Famish</p>
+                {/* <p>{user.userName}</p>  */}
                 <h5>#4667</h5>
+                {/* <p>#{_id.substring(0,4)}</p> */}
             </div>
             <div className="dm-userIcons">
                 <button className="dm-oneUserIcon DMtooltip">

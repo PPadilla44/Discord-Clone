@@ -22,13 +22,9 @@ console.log('The server is all UwU"d up on port 8000'));
 
 const io = require('socket.io')(server, {cors : true});
 
-const names = ["Pablo", "Chris", "Sam", "Rheanna", "Nardos", "Skye", "Jerm"]
 
 io.on('connection', socket => {
 
-    socket.on('join', data => {
-        socket.emit('name', names[Math.floor(Math.random()*7)])
-    })
 
     socket.on('send_to_sender', data => {
         socket.broadcast.emit('new_message_from_server', data)

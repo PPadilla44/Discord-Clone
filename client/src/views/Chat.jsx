@@ -14,26 +14,18 @@ const Chat = (props) => {
     const [loaded, setLoaded] = useState(false);
     const chatId = props.chatId;
 
-    const [user, setUser] = useState("");
+    const { user } = props;
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/messages/${chatId}`)
             .then(res => {
-                let reversed = res.data;
-                reversed = reversed.reverse();
-                setMessages(res.data);
+
+                setMessages(res.data.reverse());
                 setLoaded(true);
             });
 
-        socket.emit("join")
-
-        socket.on('name', data => {
-            setUser(data);
-            console.log(data);
-        })
-
+        
         socket.on('new_message_from_server', data => {
-            console.log(data);
 
             setMessages(prevMsgs => {
                 return [data, ...prevMsgs]

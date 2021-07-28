@@ -6,6 +6,8 @@ import User from "../components/User"
 const DMs = (props) => {
 
 
+    const { user } = props;
+
     return (
 
         <div className="dm-main">
@@ -43,7 +45,7 @@ const DMs = (props) => {
                     </div>
                 </div>
             </div>
-            <User/>
+            <User user={user}/>
         </div>
 
     )

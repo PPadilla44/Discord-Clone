@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { navigate } from "@reach/router";
 import axios from "axios";
 
-export default props => {
+import "../css/LoginReg.css";
+
+const RegistrationForm = (props) => {
+
     const [userName, setUserName] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -10,37 +14,40 @@ export default props => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState([]);
 
+    const { setLoggedIn } = props;
+
     const onSubmitHandler = e => {
         e.preventDefault();
 
         axios.post("http://localhost:8000/api/register", {
-            withCredentials: true,
             userName,
             firstName,
             lastName,
             email,
             password,
             confirmPassword
-        })
+        },{withCredentials: true,})
         .then((res) => {
-            console.log(res);
+            setLoggedIn(true);
+            navigate("/channels")
             })
         .catch((err) => {
-            const errorResponse = err.response.data.errors;
+            console.log(err)
+
+            const errorResponse = err.response.data;
             const errorArr = [];
             for(const key of Object.keys(errorResponse)){
                 errorArr.push(errorResponse[key].message)
             }
             //sets errors to the array
             setErrors(errorArr);
-            console.log(err)
         });
     };
     
 
     return (
-        <div>
-            <h1>Register Biatch</h1>
+        <div className="signInForm">
+            <h1 className="h1">Register:</h1>
             <form onSubmit={onSubmitHandler}>
             {errors.map((err,i) => <p key ={i}>{err}</p>)}
             <p>
@@ -57,20 +64,21 @@ export default props => {
             </p>
             <p>
                 <label>Email:</label><br/>
-                <input type="text" onChange={(e)=>setEmail(e.target.value)} value={email}/>
+                <input type="email" onChange={(e)=>setEmail(e.target.value)} value={email}/>
             </p>
             <p>
                 <label>Password:</label><br/>
-                <input type="text" onChange={(e)=>setPassword(e.target.value)} value={password}/>
+                <input type="password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
             </p>
             <p>
                 <label>Confirm Password:</label><br/>
-                <input type="text" onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword}/>
+                <input type="password" onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword}/>
             </p>
-            <input type="submit" value = "Sign up!"/>
+            <input type="submit" value = "Sign up!" className="button"/>
         </form>
         </div>
     )
 }
 
 
+export default RegistrationForm;
