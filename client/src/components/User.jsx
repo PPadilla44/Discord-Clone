@@ -8,7 +8,7 @@ const User = (props) => {
 
     return (
         <div className="dm-user">
-            <img className="dm-userAvatar" src="https://cdn.discordapp.com/avatars/537805209460539428/91a36ff715aea2eb46c7e10dd4e832ac.png?size=128" />
+            <img className="dm-userAvatar" src="https://cdn.discordapp.com/avatars/537805209460539428/91a36ff715aea2eb46c7e10dd4e832ac.png?size=128" alt="profpic" />
             <div className="dm-userCreds">
                 <p>Famish</p>
                 <h5>#4667</h5>

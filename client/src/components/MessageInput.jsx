@@ -1,17 +1,48 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useState} from 'react';
+import io from 'socket.io-client';
+
 
 const MessageInput = (props) => {
 
+    const [socket] = useState(() => io(':8000'))
+
+    const [contents, setContents] = useState("");
+    
+    const chatId = props.chatId;
+    const senderUserName = props.user;
+
+    const sendMessage = (e) => {
+        e.preventDefault();
+
+        
+
+        console.log(contents);
+        axios.post(`http://localhost:8000/api/messages`, {
+            contents,
+            senderUserName,
+            chatId
+        })
+            .then(res => {
+                socket.emit("send_to_sender", res.data)
+                setContents("")
+            })
+            .catch(err => console.log(err))
+        
+    }
 
     return (
-        <form className="messageInput">
+        <form onSubmit={sendMessage} className="messageInput">
             <div className="mi-messageBar">
                 <div className="mi-attachInput">
                     <div className="mi-attach">
                         <button className = "addFile bi bi-plus-circle"></button>
                     </div>
                     <div className="mi-input">
-                        <input type="text"
+                        <input 
+                        value={contents}
+                        onChange={ e => setContents(e.target.value)}
+                        type="text"
                         placeholder="Message @Karma Refined"
                         />
                     </div>

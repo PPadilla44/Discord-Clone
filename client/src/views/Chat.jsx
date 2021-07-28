@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import io from 'socket.io-client';
+import axios from 'axios';
 import '../css/Chat.css';
 import ChatNav from "../components/ChatNav";
 import MessageInput from "../components/MessageInput";
@@ -9,44 +10,68 @@ const Chat = (props) => {
 
     const [socket] = useState(() => io(':8000'));
 
+    const [messages, setMessages] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    const chatId = props.chatId;
+
+    const [user, setUser] = useState("");
+
     useEffect(() => {
+        axios.get(`http://localhost:8000/api/messages/${chatId}`)
+            .then(res => {
+                let reversed = res.data;
+                reversed = reversed.reverse();
+                setMessages(res.data);
+                setLoaded(true);
+            });
 
-        socket.emit('join', "HEllooo")
+        socket.emit("join")
 
+        socket.on('name', data => {
+            setUser(data);
+            console.log(data);
+        })
+
+        socket.on('new_message_from_server', data => {
+            console.log(data);
+
+            setMessages(prevMsgs => {
+                return [data, ...prevMsgs]
+            })
+        })
+
+        return () => socket.disconnect(true)
 
     }, [])
 
 
     return (
         <div className="chat-main">
-            <ChatNav/>
-            <div className="messageContainer">
-                <div className="chatContents">
-                    <img src="https://cdn.discordapp.com/avatars/537805209460539428/91a36ff715aea2eb46c7e10dd4e832ac.png?size=128" className="avatar" />
-                    <h2 className="ChatMessageHeader">
-                        <span className="ChatMessageHeaderUserName">Famish</span>
-                        <span className="ChatMessageHeaderTimestamp">07/23/2021</span>
-                    </h2>
-                    <div className="ChatMessageContent">its like questions n asnwers</div>
-                </div>
+            <ChatNav />
+
+            <div className="chatBox">
+                <ul className="chatMessages">
+                    
+                    {loaded && messages.map((m, i) => {
+                        return <div key={i} className="messageContainer">
+                            <div className="chatContents">
+                                <img src="https://cdn.discordapp.com/avatars/537805209460539428/91a36ff715aea2eb46c7e10dd4e832ac.png?size=128" alt="avatar" className="avatar" />
+                                <h2 className="ChatMessageHeader">
+                                    <span className="ChatMessageHeaderUserName">{m.senderUserName}</span>
+                                    <span className="ChatMessageHeaderTimestamp">{new Date(m.createdAt).toLocaleDateString()}</span>
+                                </h2>
+                                <div className="ChatMessageContent">{m.contents}</div>
+                            </div>
+                        </div>
+                    })}
+                    <div className="chatSeperator" >
+                        <span className="chatDate">July 23, 2021</span>
+                    </div>
+                </ul>
+
             </div>
-            <div className="chatSeperator" >
-                <span className="chatDate">July 23, 2021</span>
-            </div>
-            <div className="messageContainer">
-                <div className="chatContents">
-                    <img src="https://cdn.discordapp.com/avatars/537805209460539428/91a36ff715aea2eb46c7e10dd4e832ac.png?size=128" className="avatar" />
-                    <h2 className="ChatMessageHeader">
-                        <span className="ChatMessageHeaderUserName">Famish</span>
-                        <span className="ChatMessageHeaderTimestamp">07/23/2021</span>
-                    </h2>
-                    <div className="ChatMessageContent">Im a tiny kitty meow meow</div>
-                </div>
-            </div>
-            <div className="chatSeperator" >
-                <span className="chatDate">July 23, 2021</span>
-            </div>            
-            <MessageInput/>
+            <MessageInput user={user} chatId={chatId} />
+
         </div>
     )
 }

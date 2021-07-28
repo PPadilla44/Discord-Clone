@@ -7,7 +7,7 @@ const ChatNav = (props) => {
 
     return (
         <div className = "chatNav">
-            <h2>@ userName | aka optionalName</h2>
+            <h3 style={{ fontWeight: "normal" }}><span style={ { color: "gray", fontSize: "1.3rem", fontWeight: "bold" } }>@ </span> User Name </h3>
             <div className="flexRow">
                 <button className = "chatNavButtons bi bi-telephone tooltip">
                     <div className="tooltiptext">
@@ -35,7 +35,7 @@ const ChatNav = (props) => {
                     <div className="tooltiptext-search">
                         <div className="tooliptext-searchDiv">
                             <h4>Search Options</h4> 
-                            <i class="bi bi-question-circle tooltip-so">
+                            <i className="bi bi-question-circle tooltip-so">
                                 <div className="tooltiptext-so fade-in">
                                     <p>Learn more</p>
                                 </div>

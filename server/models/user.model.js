@@ -1,45 +1,52 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
-UserSchema.pre('save', function(next) {
-    bcrypt.hash(this.password, 10)
-        .then(hash => {
-        this.password = hash;
-        next();
-    });
-});
-
-const UserSchema = new mongoose.Schema({
-    firstName: { 
-	type: String,
-	required : [true, "first name is required!"],
-	minlength: [3, "first name must be at least 3 characters long"]
-    },
-    lastName: { 
+const UserSchema = new mongoose.Schema(
+    {
+    userName: {
         type: String,
-        required : [true, "last name is required!"],
-        minlength: [3, "last name must be at least 3 characters long"]
-        },
-	email: { 
-		type: String,
-		required : [true, "email is required!"],
-	},
-    validate: {
-        validator: val => /^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(val),
-        message: "Please enter a valid email"
+        required: [true, "Username name is required"],
     },
-}, { timestamps: true });
+    firstName: {
+        type: String,
+        required: [true, "first name is required"],
+    },
+    lastName: {
+        type: String,
+        required: [true, "last name is required"],
+    },
+    // https://www.npmjs.com/package/mongoose-type-email
+    email: {
+        type: String,
+        required: [true, "Email is required"],
+    },
+    password: {
+        type: String,
+        required: [true, "Password is required"],
+        minlength: [8, "Password must be 8 characters or longer"],
+    },
+},
+    { timestamps: true },
+);
 
-// add this after UserSchema is defined
-UserSchema.virtual('confirmPassword')
-    .get( () => this._confirmPassword )
-    .set( value => this._confirmPassword = value );
+UserSchema.virtual("confirmPassword")
+    .get(() => this._confirmPassword)
+    .set((value) => (this._confirmPassword = value));
 
-UserSchema.pre('validate', function(next) {
+UserSchema.pre("validate", function (next) {
     if (this.password !== this.confirmPassword) {
-        this.invalidate('confirmPassword', 'Password must match confirm password');
+    this.invalidate("confirmPassword", "Password must match confirm password");
     }
     next();
 });
 
-module.exports.User = mongoose.model('User', UserSchema);
+UserSchema.pre("save", function (next) {
+    bcrypt.hash(this.password, 10).then((hash) => {
+    this.password = hash;
+    next();
+    });
+});
+
+const User = mongoose.model("User", UserSchema);
+
+module.exports = User;
