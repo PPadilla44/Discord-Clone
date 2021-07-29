@@ -12,20 +12,23 @@ const Chat = (props) => {
 
     const [messages, setMessages] = useState([]);
     const [loaded, setLoaded] = useState(false);
-    const chatId = props.chatId;
+    const chat = props.chat;
 
     const { user } = props;
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/messages/${chatId}`)
-            .then(res => {
-
-                setMessages(res.data.reverse());
-                setLoaded(true);
-            });
 
         
-        socket.on('new_message_from_server', data => {
+        axios.get(`http://localhost:8000/api/messages/${chat._id}`)
+            .then(res => {
+                setMessages(res.data.reverse());
+                setLoaded(true);
+            })
+            .catch(err => {
+                console.log("NO MSGS");
+            })
+
+            socket.on('new_message_from_server', data => {
 
             setMessages(prevMsgs => {
                 return [data, ...prevMsgs]
@@ -34,12 +37,12 @@ const Chat = (props) => {
 
         return () => socket.disconnect(true)
 
-    }, [])
+    }, [messages])
 
 
     return (
         <div className="chat-main">
-            <ChatNav />
+            <ChatNav chat={chat} user={user} />
 
             <div className="chatBox">
                 <ul className="chatMessages">
@@ -62,7 +65,7 @@ const Chat = (props) => {
                 </ul>
 
             </div>
-            <MessageInput user={user} chatId={chatId} />
+            <MessageInput user={user} chat={chat} />
 
         </div>
     )

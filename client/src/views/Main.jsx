@@ -12,24 +12,56 @@ const Main = (props) => {
     const [checkLog, setCheckLog] = useState(isLoggedIn);
     const [user, setUser] = useState({})
     const [loaded, setLoaded] = useState(false);
+    const [checkingLoginStatus, setCheckingLoginStatus] = useState(false);
+
+    const [chat, setChat] = useState({});
 
 
     useEffect(() => {
-        axios
-            .get(`http://localhost:8000/api/users/loggedin`, {
-                withCredentials: true,
-            })
+
+        axios.get(`http://localhost:8000/api/users/loggedin`, {
+            withCredentials: true,
+        })
             .then((res) => {
                 setUser(res.data)
-                setLoaded(true)
-                setCheckLog(true)
+                setLoaded(true);
+                setCheckLog(true);
+                setCheckingLoginStatus(true)
             })
             .catch((err) => {
-                setLoaded(true)
-                setCheckLog(false)
+                setCheckLog(false);
+                setLoaded(false);
+                setCheckingLoginStatus(false)
                 navigate('/login');
             });
-    }, []);
+
+
+            if (checkingLoginStatus) {
+                if(checkLog && props.chatId ) {
+                    axios.get(`http://localhost:8000/api/chat/${props.chatId}`)
+                    .then(res => {
+                        let foundUser = false
+                        let i = 0;
+                        let listOfUsers = res.data.users;
+                        while(!foundUser && i < listOfUsers.length){
+                            if( listOfUsers[i] === user.userName) {
+                                setChat(res.data);
+                                foundUser = true;
+                            }
+                            i++;
+                        }
+                        if(!foundUser) {
+                            navigate('/channels/@me');
+                        }
+                        
+                    })
+                    .catch(err => {
+                        navigate('/channels/@me')
+                    });
+                }
+        }
+
+    }, [checkingLoginStatus, loaded]);
 
     const logout = () => {
         axios
@@ -54,16 +86,16 @@ const Main = (props) => {
 
     return (
         <>
-        {loaded &&
-            <>
-                {/* {checkLog && <button onClick={logout}>Logout</button>} */}
-                <Icons user={user} />
-                <DMs user={user} groupId={props.groupId} />
-                <Chat user={user} chatId={props.chatId} />
-            </>
-            
-        }
-            
+            {loaded &&
+                <>
+                    {/* {checkLog && <button onClick={logout}>Logout</button>} */}
+                    <Icons user={user} />
+                    <DMs user={user} groupId={props.groupId} />
+                    <Chat user={user} chat={chat} />
+                </>
+
+            }
+
 
         </>
     );

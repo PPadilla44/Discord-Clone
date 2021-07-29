@@ -25,7 +25,7 @@ const login = (event) => {
         navigate("/channels");
     })
         .catch((err) => {
-            console.log(err)
+            console.log(err.response.data)
 
             const errorResponse = err.response.data;
             const errorArray = [];

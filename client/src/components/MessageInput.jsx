@@ -8,17 +8,16 @@ const MessageInput = (props) => {
     const [socket] = useState(() => io(':8000'))
 
     const [contents, setContents] = useState("");
-    
-    const chatId = props.chatId;
-    // const senderUserName = props.user.userName;
-    const senderUserName = "BIG DOG"
+
+    const { _id: chatId, users } = props.chat;
+
+    const senderUserName = props.user.userName;
+    // const senderUserName = "BIG DOG"
 
     const sendMessage = (e) => {
         e.preventDefault();
 
-        
-
-        console.log(contents);
+        // console.log(contents);
         axios.post(`http://localhost:8000/api/messages`, {
             contents,
             senderUserName,
@@ -44,7 +43,7 @@ const MessageInput = (props) => {
                         value={contents}
                         onChange={ e => setContents(e.target.value)}
                         type="text"
-                        placeholder="Message @Karma Refined"
+                        placeholder={`Message @${users}`}
                         />
                     </div>
                 </div>

@@ -1,33 +1,46 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const uniqueValidator = require('mongoose-unique-validator');
 
 const UserSchema = new mongoose.Schema(
     {
     userName: {
         type: String,
         required: [true, "Username name is required"],
+        minlength: [3, "Username must be at least 3 characters!"],
+        unique: true
     },
     firstName: {
         type: String,
         required: [true, "first name is required"],
+        minlength: [3, "first name must be at least 3 characters!"]
     },
     lastName: {
         type: String,
         required: [true, "last name is required"],
+        minlength: [3, "last name must be at least 3 characters!"]
     },
     // https://www.npmjs.com/package/mongoose-type-email
     email: {
         type: String,
         required: [true, "Email is required"],
+        minlength: [6, "email must be at least 6 characters!"],
+        unique: true
     },
     password: {
         type: String,
         required: [true, "Password is required"],
         minlength: [8, "Password must be 8 characters or longer"],
     },
+    friends: {
+        type: Array
+    }
 },
     { timestamps: true },
 );
+
+UserSchema.plugin(uniqueValidator, { message: `{VALUE} is already taken`});
+
 
 UserSchema.virtual("confirmPassword")
     .get(() => this._confirmPassword)

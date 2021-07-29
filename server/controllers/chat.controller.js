@@ -1,0 +1,25 @@
+const { Chat } = require('../models/chat.model');
+
+module.exports = {
+
+    createNewChat: (req, res) => {
+        const { users } = req.body;
+        Chat.create( { users } )
+            .then(chat => res.json(chat))
+            .catch(err => res.status(400).json(err));
+    },
+
+    getOneChat: (req, res) => {
+        Chat.findOne( { _id: req.params._id } )
+            .then(chat => res.json(chat))
+            .catch(err => res.status(400).json(err));
+    },
+
+    updateOneChat: (req, res) => {
+        Chat.findOneAndUpdate( { _id: req.params.id}, req.body, { new: true} )
+            .then(updatedChat => res.json(updatedChat))
+            .catch(err => res.status(400).json(err))
+    }
+
+
+}

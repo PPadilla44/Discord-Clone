@@ -35,6 +35,7 @@ function App() {
     <Router className="App">
       {loaded &&
         <>
+          <Redirect from="/" to="/login" noThrow="true" />
           <Redirect from="/channels/" to="/channels/@me" noThrow="true" />
           <Main isLoggedIn={isLoggedIn}  path="/channels/:groupId/:chatId" />
           <Main isLoggedIn={isLoggedIn} path="/channels/:groupId" />

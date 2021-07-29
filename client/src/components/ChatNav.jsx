@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/Chat.css";
 
 const ChatNav = (props) => {
 
+    const {chat, user} = props;
+    const { users } = chat;
     const [searchInput, setSearchInput] = useState("");
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+
+        if(Object.keys(chat).length > 1 && chat !== undefined) {
+            setLoaded(true)
+        }
+
+    },[chat])
+
 
     const prepopulateSearch = (text) => {
         console.log(text);
@@ -15,7 +27,8 @@ const ChatNav = (props) => {
                 <span style={{ color: "gray", fontSize: "1.3rem", fontWeight: "bold" }}>
                     @{" "}
                 </span>{" "}
-                User Name{" "}
+                {/* nevermind we're mapping this now */}    
+                { loaded && users.filter( name => name !== user.userName ) }
             </h3>
             <div className="flexRow">
                 <button className="chatNavButtons bi bi-telephone tooltip">
@@ -38,7 +51,7 @@ const ChatNav = (props) => {
                         <p>Add Friends to DM</p>
                     </div>
                 </button>
-                <div className="searchCont tooltip-search">
+                <form className="searchCont tooltip-search">
                     <input
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
@@ -57,30 +70,30 @@ const ChatNav = (props) => {
                             </i>
                         </div>
                         <li>
-                            <ul onClick={(e) => prepopulateSearch("from:")}>
+                            <ul value={123} onClick={(e) => prepopulateSearch("from:")}>
                                 <span className="tooltipLabel">from:</span> user
                             </ul>
-                            <ul onClick={(e) => prepopulateSearch("mentions:")}>
+                            <ul value={123} onClick={(e) => prepopulateSearch("mentions:")}>
                                 <span value="242" className="tooltipLabel">
                                     mentions:
                                 </span>{" "}
                                 user
                             </ul>
-                            <ul onClick={(e) => prepopulateSearch("before:")}>
+                            <ul value={123} onClick={(e) => prepopulateSearch("before:")}>
                                 <span className="tooltipLabel">before:</span> specific date
                             </ul>
-                            <ul onClick={(e) => prepopulateSearch("during:")}>
+                            <ul value={123} onClick={(e) => prepopulateSearch("during:")}>
                                 <span className="tooltipLabel">during:</span> specific date
                             </ul>
-                            <ul onClick={(e) => prepopulateSearch("after:")}>
+                            <ul value={123} onClick={(e) => prepopulateSearch("after:")}>
                                 <span className="tooltipLabel">after:</span> specific date
                             </ul>
-                            <ul onClick={(e) => prepopulateSearch("in:")}>
+                            <ul value={123} onClick={(e) => prepopulateSearch("in:")}>
                                 <span className="tooltipLabel">in:</span> channel
                             </ul>
                         </li>
                     </div>
-                </div>
+                </form>
                 <button className="chatNavButtons bi bi-inbox tooltip">
                     <div className="tooltiptext-sm">
                         <p>Inbox</p>
