@@ -37,27 +37,29 @@ const Main = (props) => {
 
 
             if (checkingLoginStatus) {
-                if(checkLog && props.chatId ) {
-                    axios.get(`http://localhost:8000/api/chat/${props.chatId}`)
-                    .then(res => {
-                        let foundUser = false
-                        let i = 0;
-                        let listOfUsers = res.data.users;
-                        while(!foundUser && i < listOfUsers.length){
-                            if( listOfUsers[i] === user.userName) {
-                                setChat(res.data);
-                                foundUser = true;
+                if(checkLog) {
+                    if(props.chatId) {
+                        axios.get(`http://localhost:8000/api/chat/${props.chatId}`)
+                        .then(res => {
+                            let foundUser = false
+                            let i = 0;
+                            let listOfUsers = res.data.users;
+                            while(!foundUser && i < listOfUsers.length){
+                                if( listOfUsers[i] === user.userName) {
+                                    setChat(res.data);
+                                    foundUser = true;
+                                }
+                                i++;
                             }
-                            i++;
-                        }
-                        if(!foundUser) {
-                            navigate('/channels/@me');
-                        }
-                        
-                    })
-                    .catch(err => {
-                        navigate('/channels/@me')
-                    });
+                            if(!foundUser) {
+                                navigate('/channels/@me');
+                            }
+                            
+                        })
+                        .catch(err => {
+                            navigate('/channels/@me')
+                        });
+                    } 
                 }
         }
 

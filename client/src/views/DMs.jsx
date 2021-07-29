@@ -15,7 +15,6 @@ const DMs = (props) => {
         axios.get('http://localhost:8000/api/users')
         .then(res => {
             setAllUsers(res.data)
-            console.log(allUsers);
             setLoaded(true)
         })
         .catch(err => console.log(err))
