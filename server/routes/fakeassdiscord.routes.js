@@ -27,4 +27,5 @@ module.exports = function (app) {
     app.get('/api/chats/:_id', ChatController.getOneChat);
     app.put('/api/chats/:_id', ChatController.updateOneChat);
     app.get('/api/chats/user/:userName', ChatController.getAllChatsWithUser);
+    app.get('/api/chats/user/single/:_id/:_id2', ChatController.getChatBetweenTwoUsers);
 }

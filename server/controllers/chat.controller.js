@@ -44,11 +44,11 @@ module.exports = {
 
     getChatBetweenTwoUsers: (req, res) => {
         Chat.find( { $and: [ 
-                            { $or: [ { users: req.params[0]._id }, { users: req.params[1]._id } ] }, 
-                            { $or: [ { users: req.params[0]._id }, { users: req.params[1]._id } ] }
+                            { "users" : { $elemMatch : { "_id" : req.params._id } } }, 
+                            { "users" : { $elemMatch : { "_id" : req.params._id2 } } }
                        ]
                    })
-                   .then(console.log(res.data))
+                   .then(chat => res.json(chat))
                    .catch(err => res.status(400).json(err))
     }
 

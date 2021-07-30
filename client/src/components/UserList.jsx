@@ -22,9 +22,26 @@ const UserList = (props) => {
             setCount(userCount - 1);
             setUsers(userList.filter(singleUser => singleUser._id !== user._id ))
             setLoaded(true)
-            console.log(users)
         })
         .catch(err => console.log(err))
+    }, [])
+
+    useEffect(() => {
+        let userId2 = '610321383708344df0e004de';
+        axios.get(`http://localhost:8000/api/chats/user/single/${ user._id}/${ userId2 }`)
+            .then(res => {
+                if((res.data).length > 0) {
+                    console.log(res.data);
+                }
+
+                else {
+                    console.log('nada');
+                }
+            })
+            .catch(err => {
+                console.log('fail');
+                console.log(err);
+            })
     }, [])
 
 

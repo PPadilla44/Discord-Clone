@@ -18,7 +18,7 @@ const Messages = (props) => {
 
         axios.get(`http://localhost:8000/api/messages/${chat._id}`)
             .then(res => {
-                console.log(res.data);
+                console.log(chat);
                 setMessages(res.data.reverse());
                 setLoaded(true);
             })

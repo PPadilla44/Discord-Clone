@@ -9,8 +9,6 @@ const ChatNav = (props) => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        console.log(chat);
-
         if(Object.keys(chat).length > 1 && chat !== undefined) {
             setLoaded(true)
         }
