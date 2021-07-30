@@ -78,11 +78,11 @@
 }
 
 .dm-icon {
-    background-color: aqua;
     width: 32px;
     height: 32px;
     border-radius: 50%;
     margin-right: 8px ;
+    color: white;
 }
 
 .dm-userAvatar {
@@ -188,4 +188,33 @@
 
 .dm-convotooltipx:hover {
     color:white;
+}
+
+.dm-userName {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.dm-userID {
+    font-size: 11px;
+    color: rgb(181, 183, 186);
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.dm-bottomIcons {
+    color: rgb(181, 183, 186);
+    font-family: 'Roboto', sans-serif;
+}
+
+.dm-mute {
+    color: red;
+}
+
+.dm-unmute {
+    color: rgb(181, 183, 186);
 }

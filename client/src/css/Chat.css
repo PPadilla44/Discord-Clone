@@ -265,8 +265,11 @@ font-weight: 400
 
 #addFriendBtn {
     color: white;
-    background-color: rgb(68, 145, 68);
+    background-color: rgb(64, 164, 96);
     border-radius: 5px;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: 500
 }
 
 
@@ -463,4 +466,44 @@ font-weight: 400
 .tooltip-so:hover .tooltiptext-so {
     visibility: visible;
     opacity: 1;
+}
+
+.addNewFriend {
+    border-bottom: 1px solid rgb(42, 42, 42);
+    padding: 10px 0px 10px 30px;
+}
+.addNewFriend p{
+    padding: 10px 0px;
+}
+.addNewFriend input[type=text]{
+    width: 60vw;
+    background: rgb(48,51,57);
+    padding: 20px 15px;
+    color: white;
+    border: 1px solid rgb(42, 42, 42);
+    border-radius: 10px;
+    font-size: larger;
+}
+
+.addNewFriend input[type=submit]{
+    align-content: center;
+    vertical-align: middle;
+    margin-left: -180px;
+    width: 155px;
+    height: 40px;
+    background: rgb(88,101,242);
+    border: none;
+    color: white;
+    border-radius: 3.5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.TEST {
+    height: 100%;
+    padding: 20px 15px;
+    font-size: 12px;
+    font-weight: 1000;
+    font-family: 'Roboto', sans-serif;
+    color: rgb(185, 187, 190);
 }

@@ -82,6 +82,13 @@ body {
     color: white;
 }
 
+.valError{
+    color: red;
+    font-size: small;
+    font-style: italic;
+}
+
+
 
 
 

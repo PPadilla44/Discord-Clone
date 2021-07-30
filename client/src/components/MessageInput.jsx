@@ -11,8 +11,7 @@ const MessageInput = (props) => {
 
     const { _id: chatId, users } = props.chat;
 
-    const senderUserName = props.user.userName;
-    // const senderUserName = "BIG DOG"
+    const { user } = props;
 
     const sendMessage = (e) => {
         e.preventDefault();
@@ -20,7 +19,7 @@ const MessageInput = (props) => {
         // console.log(contents);
         axios.post(`http://localhost:8000/api/messages`, {
             contents,
-            senderUserName,
+            user,
             chatId
         })
             .then(res => {
@@ -43,7 +42,7 @@ const MessageInput = (props) => {
                         value={contents}
                         onChange={ e => setContents(e.target.value)}
                         type="text"
-                        placeholder={`Message @${users}`}
+                        placeholder={`Message @${users.filter(other => other.userName !== user.userName).map(other => other.userName)}`}
                         />
                     </div>
                 </div>

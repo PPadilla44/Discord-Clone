@@ -19,6 +19,24 @@ module.exports = {
         Chat.findOneAndUpdate( { _id: req.params.id}, req.body, { new: true} )
             .then(updatedChat => res.json(updatedChat))
             .catch(err => res.status(400).json(err))
+    },
+
+    getAllChatsWithUser: (req, res) => {
+        Chat.find()
+            .then(chats => {
+                let userChats = [];
+                const { userName } = req.params;
+                for(const chat of chats) {
+                    let users = chat.users;
+                    for(const user of users) {
+                        if(userName === user.userName) {
+                            userChats.push(chat);
+                        }
+                    }
+                }
+                res.json(userChats);
+            })
+            .catch(err => res.status(400).json(err))
     }
 
 

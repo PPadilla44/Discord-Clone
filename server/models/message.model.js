@@ -5,8 +5,8 @@ const MessageSchema = new mongoose.Schema({
     contents: {
         type: String
     },
-    senderUserName: {
-        type: String
+    user: {
+        type: Object
     },
     chatId: {
         type: String

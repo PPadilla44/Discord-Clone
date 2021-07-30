@@ -18,9 +18,7 @@ const Chat = (props) => {
     useEffect(() => {
 
         if (Object.keys(chat).length > 1) {
-            setHasChatId(true);
-        } else  {
-            setHasChatId(false)
+                setHasChatId(true)
         }
         
     }, [chat])

@@ -1,21 +1,61 @@
 import React, { useState, useEffect } from "react";
 import "../css/Chat.css";
+import axios from 'axios';
 
 const FriendsNav = (props) => {
 
     const { user } = props;
     const [searchInput, setSearchInput] = useState("");
     const [loaded, setLoaded] = useState(false);
+    const [friendName, setFriendName] = useState("")
+    const { friends: userFriends } = user;
+
+    const showAddNewChat = () => {
+        if(loaded === true) {
+            setLoaded(false)
+        } else setLoaded(true)
+    }
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault()
+        
+        axios.get('http://localhost:8000/api/users/' + friendName)
+            .then(res => {
+                let { firstName, lastName, _id, userName, hexColor } = res.data;
+                let data = {
+                    _id,
+                    firstName,
+                    lastName,
+                    userName,
+                    hexColor
+                }
+                let friend = data;
+                let friends = userFriends;
+                friends.push(friend)
+                console.log(user._id)
+                if(res.data){
+                    axios.put('http://localhost:8000/api/users/' + user._id, {
+                        friends
+                    })
+                        .then(res => {
+                            console.log(res);
+                        })
+                        .catch(err => console.log(err))
+                }
+            })
+            .catch(err => console.log(err))
+    }
 
     useEffect(() => {
 
 
 
-    }, [])
+    }, [loaded])
 
 
 
     return (
+        <>
         <div className="chatNav">
             <div className="flexRow">
                 <div className="flexRow friendsNavIcon">
@@ -32,16 +72,19 @@ const FriendsNav = (props) => {
                     <h4 className="chatNavButtons-friends">All</h4>
                     <h4 className="chatNavButtons-friends">Pending</h4>
                     <h4 className="chatNavButtons-friends">Blocked</h4>
-                    <h4 className="chatNavButtons-friends" id="addFriendBtn">Add Friend</h4>
+                    <h4 className="chatNavButtons-friends" id="addFriendBtn" onClick={showAddNewChat}>Add Friend</h4>
                 </div>
             </div>
             <div className="flexRow">
-                <svg style={{marginRight: "5px", paddingRight: "10px", color: "lightgray"}} x="0" y="0" className="tooltip" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
-                    <div className="tooltiptext-sm">
-                        <p>New Group DM</p>
-                    </div>
-                    <path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d="M20.998 0V3H23.998V5H20.998V8H18.998V5H15.998V3H18.998V0H20.998ZM2.99805 20V24L8.33205 20H14.998C16.102 20 16.998 19.103 16.998 18V9C16.998 7.896 16.102 7 14.998 7H1.99805C0.894047 7 -0.00195312 7.896 -0.00195312 9V18C-0.00195312 19.103 0.894047 20 1.99805 20H2.99805Z"></path>
-                </svg>
+                <button className="chatNavButtons bi bi-chat-left-text tooltip" onClick={showAddNewChat}>
+                    {/* Got rid of these because this was the reason why the tooltip wasn't worked. Replaced the icon with something similiar */}
+                    {/* <svg style={{marginRight: "5px", paddingRight: "10px", color: "lightgray"}} x="0" y="0" className="tooltip" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"> */}
+                        <div className="tooltiptext">
+                            <p>New Group DM</p>
+                        </div>
+                        {/* <path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d="M20.998 0V3H23.998V5H20.998V8H18.998V5H15.998V3H18.998V0H20.998ZM2.99805 20V24L8.33205 20H14.998C16.102 20 16.998 19.103 16.998 18V9C16.998 7.896 16.102 7 14.998 7H1.99805C0.894047 7 -0.00195312 7.896 -0.00195312 9V18C-0.00195312 19.103 0.894047 20 1.99805 20H2.99805Z"></path>
+                    </svg> */}
+                </button>
                 <button className="chatNavButtons bi bi-inbox tooltip">
                     <div className="tooltiptext-sm">
                         <p>Inbox</p>
@@ -54,6 +97,19 @@ const FriendsNav = (props) => {
                 </button>
             </div>
         </div>
+            {loaded &&
+                <div className="addNewFriend">
+                    <h3>ADD FRIEND</h3>
+                    <p>You can add a friend with their Discord Tag. It's cAsE sEnSiTiVe</p>
+                    <form onSubmit={onSubmitHandler}>
+                        <p>
+                            <input type="text" name="sendFriendRequest" placeholder="Enter a Username#0000" onChange={(e) => setFriendName(e.target.value)} value={friendName}  />
+                            <input type="submit" value="Send Friend Request" />
+                        </p>
+                    </form>
+                </div>
+            }
+        </>
     );
 };
 

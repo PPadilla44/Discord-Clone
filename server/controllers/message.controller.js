@@ -3,8 +3,8 @@ const { Message } = require('../models/message.model');
 module.exports = {
 
     createNewMessage: (req, res) => {
-        const { contents, senderUserName, chatId } = req.body;
-        Message.create( {contents,senderUserName, chatId } )
+        const { contents, user, chatId } = req.body;
+        Message.create( {contents, user, chatId } )
             .then(message => res.json(message))
             .catch(err => res.status(400).json(err));
     },

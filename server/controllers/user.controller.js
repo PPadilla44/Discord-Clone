@@ -2,11 +2,24 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
+function randomHex() {
+    const hexArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+
+    let hex = ""
+    for(let i = 0; i < 6; i++) {
+        hex += hexArr[Math.floor(Math.random() * 16)];
+    }
+    return hex
+}
+
 // export an object that is full of methods
 module.exports = {
     register: (req, res) => {
         const user = new User(req.body);
-
+        
+        user.hexColor = randomHex();
+        
         user.save().then(() => {
                 res.cookie(
                     "usertoken",
@@ -83,5 +96,22 @@ module.exports = {
         User.findOne({ _id: req.params.id })
             .then((user) => res.json(user))
             .catch((err) => res.json(err));
+    },
+
+    getOneByUserName: (req, res) => {
+        User.findOne({userName: req.params.userName})
+            .then((user) => res.json(user))
+            .catch((err) => res.json(err));
+    },
+
+
+    updateOne: (req, res) => {
+        User.findOneAndUpdate( { _id: req.params._id }, req.body, { new: true } )
+            .then(updatedOne => {
+                res.json(updatedOne)
+                console.log(updatedOne) 
+                console.log(req.body);
+            })
+            .catch(err => res.status(400).json(err))
     },
 };

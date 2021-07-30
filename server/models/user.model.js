@@ -6,8 +6,8 @@ const UserSchema = new mongoose.Schema(
     {
     userName: {
         type: String,
-        required: [true, "Username name is required"],
-        minlength: [3, "Username must be at least 3 characters!"],
+        required: [true, "username name is required"],
+        minlength: [3, "username must be at least 3 characters!"],
         unique: true
     },
     firstName: {
@@ -23,17 +23,20 @@ const UserSchema = new mongoose.Schema(
     // https://www.npmjs.com/package/mongoose-type-email
     email: {
         type: String,
-        required: [true, "Email is required"],
+        required: [true, "email is required"],
         minlength: [6, "email must be at least 6 characters!"],
         unique: true
     },
     password: {
         type: String,
-        required: [true, "Password is required"],
-        minlength: [8, "Password must be 8 characters or longer"],
+        required: [true, "password is required"],
+        minlength: [8, "password must be 8 characters or longer"],
     },
     friends: {
         type: Array
+    },
+    hexColor: {
+        type: String,
     }
 },
     { timestamps: true },
@@ -59,6 +62,12 @@ UserSchema.pre("save", function (next) {
     next();
     });
 });
+
+UserSchema.path('email').validate(function (email) {
+    var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailRegex.test(email); // Assuming email has a text attribute
+}, 'Invalid Email');
+
 
 const User = mongoose.model("User", UserSchema);
 

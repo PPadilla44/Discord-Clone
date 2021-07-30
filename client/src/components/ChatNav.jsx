@@ -28,7 +28,7 @@ const ChatNav = (props) => {
                     @{" "}
                 </span>{" "}
                 {/* nevermind we're mapping this now */}    
-                { loaded && users.filter( name => name !== user.userName ) }
+                { loaded && users.filter( name => name.userName !== user.userName ).map(name => name.userName) }
             </h3>
             <div className="flexRow">
                 <button className="chatNavButtons bi bi-telephone tooltip">

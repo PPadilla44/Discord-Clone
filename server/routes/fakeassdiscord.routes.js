@@ -14,7 +14,8 @@ module.exports = function (app) {
     // this route now has to be authenticated
     app.get("/api/users", UserController.getAll);
     app.get("/api/users/loggedin", authenticate, UserController.getLoggedInUser);
-    
+    app.get("/api/users/:userName", UserController.getOneByUserName);
+    app.put("/api/users/:_id", UserController.updateOne);
 
     // Message Controller
 
@@ -22,7 +23,8 @@ module.exports = function (app) {
     app.get('/api/messages/:chatId', MessageController.getChatMessages);
 
     // Chat Controller
-    app.post('/api/chat', ChatController.createNewChat);
-    app.get('/api/chat/:_id', ChatController.getOneChat);
-    app.put('/api/chat/:_id', ChatController.updateOneChat);
+    app.post('/api/chats', ChatController.createNewChat);
+    app.get('/api/chats/:_id', ChatController.getOneChat);
+    app.put('/api/chats/:_id', ChatController.updateOneChat);
+    app.get('/api/chats/user/:userName', ChatController.getAllChatsWithUser);
 }
