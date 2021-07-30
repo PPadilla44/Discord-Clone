@@ -16,9 +16,9 @@ const Messages = (props) => {
 
     useEffect(() => {
 
-        
         axios.get(`http://localhost:8000/api/messages/${chat._id}`)
             .then(res => {
+                console.log(res.data);
                 setMessages(res.data.reverse());
                 setLoaded(true);
             })
@@ -35,7 +35,7 @@ const Messages = (props) => {
 
         return () => socket.disconnect(true)
 
-    }, [messages])
+    }, [chat])
 
 
     return (

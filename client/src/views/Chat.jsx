@@ -11,7 +11,7 @@ const Chat = (props) => {
 
 
 
-    const { user, chat } = props;
+    const { user, setChat, chat } = props;
     const [hasChatId, setHasChatId] = useState(false);
 
 
@@ -36,7 +36,7 @@ const Chat = (props) => {
                 :
                 <>
                     <FriendsNav user={user} />
-                    <UserList chat={chat} user={user} />
+                    <UserList setChat={setChat} user={user} />
                 </>
             }
 

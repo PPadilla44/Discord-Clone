@@ -15,6 +15,7 @@ const DMs = (props) => {
 
         axios.get(`http://localhost:8000/api/chats/user/${user.userName}`)
         .then(res => {
+            console.log(res.data);
             setAllChats(res.data)
             setLoaded(true)
         })

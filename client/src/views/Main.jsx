@@ -91,9 +91,9 @@ const Main = (props) => {
             {loaded &&
                 <>
                     {/* {checkLog && <button onClick={logout}>Logout</button>} */}
-                    <Icons user={user} />
+                    <Icons setChat={setChat} user={user} />
                     <DMs setChat={setChat} user={user} groupId={props.groupId} />
-                    <Chat user={user} chat={chat} />
+                    <Chat setChat={setChat} user={user} chat={chat} />
                 </>
 
             }

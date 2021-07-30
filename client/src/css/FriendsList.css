@@ -6,8 +6,12 @@
     line-height: 20px;
     overflow: hidden;
     box-sizing: border-box;
-    cursor: pointer;
     margin-left: 15px;
+    padding: 12px 10px;
+}
+
+.inner {
+    cursor: pointer;
 }
 
 .friendNavButtons{
@@ -20,4 +24,83 @@
     color: rgb(185,187,190);
     font-size: 20px;
     background-color: rgb(54,57,63);
+}
+
+.peopleListItemIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.peopleListItemButton {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    background-color: rgb(47, 49, 54);
+}
+
+.peopleListItemActions {
+    display: flex;
+    margin-left: 8px;
+}
+
+.peopleListItemContents {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+}
+
+.peopleListItemUserInfo {
+    display: flex;
+    overflow: hidden;
+}
+
+.peopleListItemAvatar {
+    margin: 0 12px 0 0;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
+
+.peopleListItemText {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.peopleListItemNameTag {
+    overflow: hidden;
+    display: flex;
+    flex-grow: 1;
+    align-items: flex-end;
+}
+
+.peopleListItemUserName {
+    display: block;
+    white-space: nowrap;
+    flex: 0 1 auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 600
+}
+
+.peopleListItemSubtext {
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #b9bbbe;
+}
+
+.inner:hover{
+    background-color: rgb(58, 62 ,68);
+    border-top: none;
+    border-radius: 10px;
 }
