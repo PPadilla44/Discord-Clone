@@ -8,8 +8,8 @@ const Icons = (props) => {
     const { setChat } = props;
 
     const goHome = () => {
+        setChat({})
         navigate('/channels/@me');
-        setChat(null)
     }
 
     return(

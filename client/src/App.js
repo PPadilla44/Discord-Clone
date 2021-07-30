@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css"
-import { Router, Redirect, navigate } from "@reach/router";
+import { Router, Redirect } from "@reach/router";
 import Main from "./views/Main"
 import LoginReg from "./views/LoginReg"
 import axios from "axios";
@@ -39,7 +39,7 @@ function App() {
           <Redirect from="/channels/" to="/channels/@me" noThrow="true" />
           <Main isLoggedIn={isLoggedIn}  path="/channels/:groupId/:chatId" />
           <Main isLoggedIn={isLoggedIn} path="/channels/:groupId" />
-          <LoginReg setLoggedIn={setIsLoggedIn} path="/login" />
+          <LoginReg isLoggedIn={isLoggedIn} setLoggedIn={setIsLoggedIn} path="/login" />
         </>
       }
 

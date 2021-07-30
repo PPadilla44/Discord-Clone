@@ -12,30 +12,47 @@ const Messages = (props) => {
     const [messages, setMessages] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
-    const { user, chat } = props;
+    const [trigger, setTrigger] = useState({});
+
+    const { chat } = props;
+
+
 
     useEffect(() => {
 
         axios.get(`http://localhost:8000/api/messages/${chat._id}`)
             .then(res => {
-                console.log(chat);
                 setMessages(res.data.reverse());
                 setLoaded(true);
             })
             .catch(err => {
                 console.log("NO MSGS");
-            })
+            });
 
-            socket.on('new_message_from_server', data => {
-
-            setMessages(prevMsgs => {
-                return [data, ...prevMsgs]
-            })
-        })
-
-        return () => socket.disconnect(true)
 
     }, [chat])
+
+    useEffect(() => {
+
+        socket.on('new_message_from_server', data => {
+            setTrigger(data);
+        });
+        
+        return () => socket.disconnect(true)
+
+    }, [socket])
+
+    useEffect(() => {
+
+        
+        if(trigger.chatId === chat._id) {
+            setMessages(prevMsgs => {
+                return [trigger, ...prevMsgs]
+            }
+            )
+        }
+
+    }, [trigger, chat._id])
 
 
     return (

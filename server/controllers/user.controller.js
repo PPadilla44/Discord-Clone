@@ -109,8 +109,6 @@ module.exports = {
         User.findOneAndUpdate( { _id: req.params._id }, req.body, { new: true } )
             .then(updatedOne => {
                 res.json(updatedOne)
-                console.log(updatedOne) 
-                console.log(req.body);
             })
             .catch(err => res.status(400).json(err))
     },

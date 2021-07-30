@@ -3,13 +3,13 @@ import DMsSearch from "../components/DMsSearch";
 import User from "../components/User"
 import axios from 'axios';
 import "../css/DMs.css"
-import { navigate, Link } from "@reach/router";
+import { navigate } from "@reach/router";
 
 const DMs = (props) => {
+
     const { user, setChat } = props;
     const [allChats, setAllChats] = useState([]);
     const [loaded, setLoaded] = useState(false);
-    const [chatId, setChatId] = useState()
 
     useEffect(() => {
 
@@ -20,7 +20,7 @@ const DMs = (props) => {
         })
         .catch(err => console.log(err))
 
-    }, [])
+    }, [user.userName])
 
     const submitChat = (chat) => {
         setChat(chat);

@@ -7,7 +7,7 @@ import "../css/LoginReg.css";
 const SignIn = ({setLoggedIn}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState("");
 
 const login = (event) => {
     event.preventDefault();
@@ -25,12 +25,8 @@ const login = (event) => {
         navigate("/channels");
     })
         .catch((err) => {
-            console.log(err.response)
-            console.log(err.response.data)
-
-            const errorResponse = err.response.data.errors;
+            const errorResponse = err.response.data.msg;
             setErrors(errorResponse);
-            console.log(errors);
         });
     };
     return (
@@ -40,13 +36,13 @@ const login = (event) => {
             <p>
                 <label>Email: </label><br/>
                 <input type="email" onChange={(e)=>setEmail(e.target.value)} value={email}/>
-                {/* <p className = "valError">{errors.login ? errors.login.message : <br/>}</p> */}
             </p>
             <p>
                 <label>Password: </label><br/>
                 <input type="password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
             </p>
             <br/>
+            <p className = "valError">{errors ? errors : <br/>}</p>
             <input type="submit" value = "Sign In!"  className="button"/>
         </form>
             

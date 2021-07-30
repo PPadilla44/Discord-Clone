@@ -24,7 +24,6 @@ module.exports = {
     getAllChatsWithUser: (req, res) => {
         Chat.find()
             .then(chats => {
-                console.log(chats[chats.length-1].users);
                 let userChats = [];
                 const { userName } = req.params;
                 for(const chat of chats) {

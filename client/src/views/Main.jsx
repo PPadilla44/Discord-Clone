@@ -63,27 +63,27 @@ const Main = (props) => {
                 }
         }
 
-    }, [checkingLoginStatus, loaded]);
+    }, [checkingLoginStatus, loaded, props.chatId, checkLog, user.userName]);
 
-    const logout = () => {
-        axios
-            .post(
-                "http://localhost:8000/api/logout",
-                {},
-                {
-                    // need to send the cookie in request so server can clear it
-                    withCredentials: true,
-                }
-            )
-            .then((res) => {
-                setCheckLog(false);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+    // const logout = () => {
+    //     axios
+    //         .post(
+    //             "http://localhost:8000/api/logout",
+    //             {},
+    //             {
+    //                 // need to send the cookie in request so server can clear it
+    //                 withCredentials: true,
+    //             }
+    //         )
+    //         .then((res) => {
+    //             setCheckLog(false);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
 
-        navigate('/login')
-    };
+    //     navigate('/login')
+    // };
 
 
     return (

@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../css/Icons.css";
 import "../css/LoginReg.css";
 
 import SignIn from "../components/Login";
 import RegistrationForm from "../components/RegistrationForm"
+import { navigate } from "@reach/router";
 
 const LoginReg = (props) => {
-    const { setLoggedIn } = props;
+
+    const { setLoggedIn, isLoggedIn } = props;
+
+    useEffect(() => {
+
+        if(isLoggedIn) {
+            navigate(`/channels/@me`)
+        }
+
+    },[isLoggedIn])
 
     return (
         <div className="wrapper">

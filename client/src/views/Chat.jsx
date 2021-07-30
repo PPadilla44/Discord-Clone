@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import '../css/Chat.css';
 import ChatNav from "../components/ChatNav";
 import MessageInput from "../components/MessageInput";
@@ -12,21 +12,11 @@ const Chat = (props) => {
 
 
     const { user, setChat, chat } = props;
-    const [hasChatId, setHasChatId] = useState(false);
-
-
-    useEffect(() => {
-
-        if (Object.keys(chat).length > 1) {
-                setHasChatId(true)
-        }
-        
-    }, [chat])
 
     return (
         <div className="chat-main">
 
-            {hasChatId ?
+            {Object.keys(chat).length > 1 ?
                 <>
                     <ChatNav chat={chat} user={user} />
                     <Messages chat={chat} user={user} />

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import '../css/Chat.css';
 import axios from 'axios';
 import FriendsList from './FriendsList';
+import { navigate } from '@reach/router';
 
 const UserList = (props) => {
 
@@ -26,30 +27,39 @@ const UserList = (props) => {
         .catch(err => console.log(err))
     }, [])
 
-    useEffect(() => {
-        let userId2 = '610321383708344df0e004de';
-        axios.get(`http://localhost:8000/api/chats/user/single/${ user._id}/${ userId2 }`)
+    const joinChat = useCallback( async (e) => {
+        let secondUserId = e._id;
+        let users = [ user, e]
+
+        await axios.get(`http://localhost:8000/api/chats/user/single/${ user._id}/${ secondUserId }`)
             .then(res => {
+                console.log('first')
                 if((res.data).length > 0) {
-                    console.log(res.data);
+                    navigate(`/channels/@me/${res.data[0]._id}`);
                 }
 
                 else {
-                    console.log('nada');
+                    axios.post('http://localhost:8000/api/chats',{
+                        users,
+                    })
+                        .then(res => {
+                            console.log(res.data._id)
+                            navigate(`/channels/@me/${res.data._id}`) })
+                        .catch(err => console.log(err));
+                    }
                 }
-            })
+            )
             .catch(err => {
                 console.log('fail');
                 console.log(err);
             })
     }, [])
 
-
     return (
         <div className="peopleListItemContainer">
             <p className="TEST">ALL USERS - {count}</p>
             {loaded && 
-            <FriendsList setChat={ setChat } user={user} users={ users } /> }
+            <FriendsList setChat={ setChat } user={user} users={ users } joinChat={ joinChat } /> }
         </div>
     )
 }

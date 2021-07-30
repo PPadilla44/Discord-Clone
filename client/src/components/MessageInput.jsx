@@ -28,6 +28,7 @@ const MessageInput = (props) => {
             })
             .catch(err => console.log(err))
         
+        return () => socket.disconnect(true)
     }
 
     return (

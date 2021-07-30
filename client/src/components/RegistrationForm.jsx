@@ -35,12 +35,8 @@ const RegistrationForm = (props) => {
             navigate("/channels")
             })
         .catch(err => {
-            console.log(err.response);
-            console.log(err.response.data)
-
             const errorResponse = err.response.data.errors;
             setErrors(errorResponse);
-            console.log(errors);
         });
     };
     
@@ -50,36 +46,36 @@ const RegistrationForm = (props) => {
         <div className="signInForm">
             <h1 className="h1">Register:</h1>
             <form onSubmit={onSubmitHandler}>
-                <p>
+                <div>
                     <label>Username: </label><br/>
                     <input type="text" onChange={(e)=>setUserName(e.target.value)} value={userName}/>
                     <p className = "valError">{errors.userName ? errors.userName.message : <br/>}</p>
-                </p>
-                <p>
+                </div>
+                <div>
                     <label>First Name:</label><br/>
                     <input type="text" onChange={(e)=>setFirstName(e.target.value)} value={firstName}/>
                     <p className = "valError">{errors.firstName ? errors.firstName.message : <br/>}</p>
-                </p>
-                <p>
+                </div>
+                <div>
                     <label>Last Name:</label><br/>
                     <input type="text" onChange={(e)=>setLastName(e.target.value)} value={lastName}/>
                     <p className = "valError">{errors.lastName ? errors.lastName.message :<br/>}</p>
-                </p>
-                <p>
+                </div>
+                <div>
                     <label>Email:</label><br/>
                     <input type="email" onChange={(e)=>setEmail(e.target.value)} value={email}/>
                     <p className = "valError">{errors.email ? errors.email.message : <br/>}</p>
-                </p>
-                <p>
+                </div>
+                <div>
                     <label>Password:</label><br/>
                     <input type="password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
                     <p className = "valError">{errors.password ? errors.password.message : <br/>}</p>
-                </p>
-                <p>
+                </div>
+                <div>
                     <label>Confirm Password:</label><br/>
                     <input type="password" onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword}/>
                     <p className = "valError">{errors.confirmPassword ? errors.confirmPassword.message : <br/>}</p>
-                </p>
+                </div>
                 <input type="hidden" name="friends" value={friends} />
                 <input type="submit" value = "Sign up!" className="button"/>
             </form>
