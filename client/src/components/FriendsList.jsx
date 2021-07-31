@@ -9,25 +9,6 @@ const FriendsList =  (props) =>{
 
     const { user, users:allUsers, setChat, joinChat } = props;
 
-    const createChat = (person) => {
-
-        let users = [];
-
-        users.push(user);
-        users.push(person);
-
-
-        axios.post('http://localhost:8000/api/chats',{
-            users,
-        })
-            .then(res => {
-                navigate(`/channels/@me/${res.data._id}`)
-                setChat(res.data)
-            })
-            .catch(err => console.log(err))
-
-    }
-
 
     return (
         <div>

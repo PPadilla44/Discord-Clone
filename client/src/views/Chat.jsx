@@ -11,7 +11,7 @@ const Chat = (props) => {
 
 
 
-    const { user, setChat, chat } = props;
+    const { user, setChat, chat, setNewDM } = props;
 
     return (
         <div className="chat-main">
@@ -26,7 +26,7 @@ const Chat = (props) => {
                 :
                 <>
                     <FriendsNav user={user} />
-                    <UserList setChat={setChat} user={user} />
+                    <UserList setNewDM={setNewDM} setChat={setChat} user={user} />
                 </>
             }
 

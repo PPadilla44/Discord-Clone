@@ -15,6 +15,7 @@ const Main = (props) => {
     const [checkingLoginStatus, setCheckingLoginStatus] = useState(false);
 
     const [chat, setChat] = useState({});
+    const [newDM, setNewDM] = useState({});
 
 
     useEffect(() => {
@@ -92,8 +93,8 @@ const Main = (props) => {
                 <>
                     {/* {checkLog && <button onClick={logout}>Logout</button>} */}
                     <Icons setChat={setChat} user={user} />
-                    <DMs setChat={setChat} user={user} groupId={props.groupId} />
-                    <Chat setChat={setChat} user={user} chat={chat} />
+                    <DMs  setChat={setChat} currentChat={chat} newDM={newDM} user={user} groupId={props.groupId} />
+                    <Chat setChat={setChat} setNewDM={setNewDM} user={user} chat={chat} />
                 </>
 
             }

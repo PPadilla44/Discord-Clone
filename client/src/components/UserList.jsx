@@ -6,7 +6,7 @@ import { navigate } from '@reach/router';
 
 const UserList = (props) => {
 
-    const { user, setChat } = props;
+    const { user, setChat, setNewDM } = props;
     const [ users, setUsers ] = useState();
     const [ loaded, setLoaded ] = useState(false);
     const [ count, setCount ] = useState(0);
@@ -43,7 +43,7 @@ const UserList = (props) => {
                         users,
                     })
                         .then(res => {
-                            console.log(res.data._id)
+                            setNewDM(res.data)
                             navigate(`/channels/@me/${res.data._id}`) })
                         .catch(err => console.log(err));
                     }
