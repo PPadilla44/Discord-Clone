@@ -4,6 +4,8 @@ import User from "../components/User"
 import axios from 'axios';
 import "../css/DMs.css"
 import { navigate } from "@reach/router";
+import io from 'socket.io-client';
+
 
 const DMs = (props) => {
 
@@ -11,6 +13,33 @@ const DMs = (props) => {
     const [allChats, setAllChats] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
+    const [socket] = useState(() => io(':8000'));
+
+
+    useEffect(() => {
+        socket.on('show_new_dm', data => {
+
+            console.log(data);
+
+            var hasUser = false;
+            let i = 0;
+            while(i < data.users.length && !hasUser) {
+                let name = data.users[i];
+                console.log(name);
+                if(name.userName === user.userName) {
+                    hasUser = true;
+                }
+                i++;
+            }
+            if(hasUser) {
+                setAllChats([...allChats, data])
+            }
+
+        })
+
+        return () => socket.disconnect(true)
+
+    },[socket])
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/chats/user/${user.userName}`)

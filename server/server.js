@@ -30,5 +30,8 @@ io.on('connection', socket => {
         socket.broadcast.emit('new_message_from_server', data)
     })
 
+    socket.on('new_dm', data => {
+        socket.broadcast.emit('show_new_dm', data);
+    })
 
 }) 

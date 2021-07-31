@@ -3,6 +3,8 @@ import '../css/Chat.css';
 import axios from 'axios';
 import FriendsList from './FriendsList';
 import { navigate } from '@reach/router';
+import io from 'socket.io-client';
+
 
 const UserList = (props) => {
 
@@ -10,6 +12,9 @@ const UserList = (props) => {
     const [ users, setUsers ] = useState();
     const [ loaded, setLoaded ] = useState(false);
     const [ count, setCount ] = useState(0);
+
+    const [socket] = useState(() => io(':8000'));
+
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/users')
@@ -43,6 +48,7 @@ const UserList = (props) => {
                         users,
                     })
                         .then(res => {
+                            socket.emit('new_dm', res.data)
                             setNewDM(res.data)
                             navigate(`/channels/@me/${res.data._id}`) })
                         .catch(err => console.log(err));
