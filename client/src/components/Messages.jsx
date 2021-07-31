@@ -20,14 +20,13 @@ const Messages = (props) => {
 
     useEffect(() => {
 
-        axios.get(`http://localhost:8000/api/messages/${chat._id}`)
+        axios.get(`http://localhost:8000/api/chats/${chat._id}`)
             .then(res => {
-                setMessages(res.data.reverse());
-                setLoaded(true);
+                console.log(res.data.messages);
+                    setMessages(res.data.messages.reverse());
+                    setLoaded(true);
             })
-            .catch(err => {
-                console.log("NO MSGS");
-            });
+            .catch(err => console.log(err));
 
 
     }, [chat])
@@ -35,6 +34,22 @@ const Messages = (props) => {
     useEffect(() => {
 
         socket.on('new_message_from_server', data => {
+            
+            axios.get(`http://localhost:8000/api/chats/${data.chatId}`)
+                .then(res => {
+                    
+                    let { messages : chatMessages} = res.data;
+                    chatMessages.push(data);
+
+                    axios.put(`http://localhost:8000/api/chats/${data.chatId}`,{
+                        messages : chatMessages
+                    })
+                        .then(res => console.log(res.data))
+                        .catch(err => console.log(err))
+                })
+                .catch(err => console.log(err))
+            
+
             setTrigger(data);
         });
         
@@ -44,7 +59,6 @@ const Messages = (props) => {
 
     useEffect(() => {
 
-        
         if(trigger.chatId === chat._id) {
             setMessages(prevMsgs => {
                 return [trigger, ...prevMsgs]

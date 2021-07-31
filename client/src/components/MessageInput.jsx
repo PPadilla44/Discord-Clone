@@ -16,7 +16,6 @@ const MessageInput = (props) => {
     const sendMessage = (e) => {
         e.preventDefault();
 
-        // console.log(contents);
         axios.post(`http://localhost:8000/api/messages`, {
             contents,
             user,
