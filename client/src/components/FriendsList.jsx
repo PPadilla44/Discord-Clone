@@ -26,7 +26,7 @@ const FriendsList =  (props) =>{
                                     {user.userName}
                                 </div>
                                 <div className="peopleListItemSubtext">
-                                    Online
+                                    {user.onlineStatus}
                                 </div>
                             </div>
                         </div>

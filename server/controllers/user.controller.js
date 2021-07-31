@@ -19,6 +19,7 @@ module.exports = {
         const user = new User(req.body);
         
         user.hexColor = randomHex();
+        user.onlineStatus = "Online";
         
         user.save().then(() => {
                 res.cookie(

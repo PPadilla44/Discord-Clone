@@ -32,7 +32,6 @@ const FriendsNav = (props) => {
                 let friend = data;
                 let friends = userFriends;
                 friends.push(friend)
-                console.log(user._id)
                 if(res.data){
                     axios.put('http://localhost:8000/api/users/' + user._id, {
                         friends

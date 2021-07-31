@@ -34,4 +34,17 @@ io.on('connection', socket => {
         socket.broadcast.emit('show_new_dm', data);
     })
 
+    socket.on('disconnect', data => {
+        if(data === 'transport close') {
+            console.log(data,"dsadsa");
+        }
+        socket.broadcast.emit('user_offline', "OFFLINE" );
+    })
+
+    socket.on('user_online', data => {
+        console.log(data);
+        console.log("ONINE");
+        
+    })
+    
 }) 

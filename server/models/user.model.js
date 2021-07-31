@@ -37,6 +37,9 @@ const UserSchema = new mongoose.Schema(
     },
     hexColor: {
         type: String,
+    },
+    onlineStatus : {
+        type: String,
     }
 },
     { timestamps: true },

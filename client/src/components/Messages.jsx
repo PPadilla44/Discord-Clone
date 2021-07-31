@@ -33,6 +33,7 @@ const Messages = (props) => {
 
     useEffect(() => {
 
+
         socket.on('new_message_from_server', data => {
             
             axios.get(`http://localhost:8000/api/chats/${data.chatId}`)

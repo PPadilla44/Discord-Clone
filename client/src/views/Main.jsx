@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { navigate } from '@reach/router'
+import io from 'socket.io-client';
+
 import axios from "axios";
 import Icons from "./Icons";
 import DMs from "./DMs";
@@ -16,6 +18,9 @@ const Main = (props) => {
 
     const [chat, setChat] = useState({});
     const [newDM, setNewDM] = useState({});
+
+    const [socket] = useState(() => io(':8000'));
+
 
 
     useEffect(() => {
@@ -35,6 +40,7 @@ const Main = (props) => {
                 setCheckingLoginStatus(false)
                 navigate('/login');
             });
+
 
 
             if (checkingLoginStatus) {
@@ -66,6 +72,7 @@ const Main = (props) => {
 
     }, [checkingLoginStatus, loaded, props.chatId, checkLog, user.userName]);
 
+
     // const logout = () => {
     //     axios
     //         .post(
@@ -93,7 +100,7 @@ const Main = (props) => {
                 <>
                     {/* {checkLog && <button onClick={logout}>Logout</button>} */}
                     <Icons setChat={setChat} user={user} />
-                    <DMs  setChat={setChat} currentChat={chat} newDM={newDM} user={user} groupId={props.groupId} />
+                    <DMs  setChat={setChat} currentChat={chat} setNewDM={setNewDM} newDM={newDM} user={user} groupId={props.groupId} />
                     <Chat setChat={setChat} setNewDM={setNewDM} user={user} chat={chat} />
                 </>
 
