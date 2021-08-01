@@ -5,16 +5,28 @@ import axios from 'axios';
 const FriendsNav = (props) => {
 
     const { user } = props;
-    const [searchInput, setSearchInput] = useState("");
     const [loaded, setLoaded] = useState(false);
     const [friendName, setFriendName] = useState("")
     const { friends: userFriends } = user;
+    const [display, setDisplay] = useState(false);
+    const [options, setOptions] = useState([]);
+    const [search, setSearch] = useState("");
 
     const showAddNewChat = () => {
         if(loaded === true) {
             setLoaded(false)
         } else setLoaded(true)
     }
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/users')
+            .then(res => {
+                setOptions(res.data)
+            })
+            .catch(err => console.log(err))
+        console.log(options);
+    },[])
+
 
     const onSubmitHandler = (e) => {
         e.preventDefault()
@@ -102,9 +114,16 @@ const FriendsNav = (props) => {
                     <p>You can add a friend with their Discord Tag. It's cAsE sEnSiTiVe</p>
                     <form onSubmit={onSubmitHandler}>
                         <p>
-                            <input type="text" name="sendFriendRequest" placeholder="Enter a Username#0000" onChange={(e) => setFriendName(e.target.value)} value={friendName}  />
+                            <input autoComplete={"off"} type="text" onClick={(() => setDisplay(!display))} name="sendFriendRequest" placeholder="Enter a Username#0000" onChange={(e) => setFriendName(e.target.value)} value={friendName}  />
                             <input type="submit" value="Send Friend Request" />
                         </p>
+                        {display && options.map((v, i) => {
+                            return (
+                                <div key={i}>
+                                    <span>{v.userName}</span>
+                                </div>
+                            )
+                        })}
                     </form>
                 </div>
             }
