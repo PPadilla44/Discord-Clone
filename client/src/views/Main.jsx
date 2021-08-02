@@ -16,6 +16,8 @@ const Main = (props) => {
     const [loaded, setLoaded] = useState(false);
     const [checkingLoginStatus, setCheckingLoginStatus] = useState(false);
 
+    const [blur, setBlur] = useState(false)
+
     const [chat, setChat] = useState({});
     const [newDM, setNewDM] = useState({});
 
@@ -99,8 +101,9 @@ const Main = (props) => {
             {loaded &&
                 <>
                     {/* {checkLog && <button onClick={logout}>Logout</button>} */}
+                    { blur && <div className={"blurBackground"} style={{ opacity: '0.85', background: 'hsl(0, calc(var(--saturation-factor, 1) * 0%), 0%)', zIndex: '998' }}/>}
                     <Icons setChat={setChat} user={user} />
-                    <DMs  setChat={setChat} currentChat={chat} setNewDM={setNewDM} newDM={newDM} user={user} groupId={props.groupId} />
+                    <DMs setBlur={setBlur} setChat={setChat} currentChat={chat} setNewDM={setNewDM} newDM={newDM} user={user} groupId={props.groupId} />
                     <Chat setChat={setChat} setNewDM={setNewDM} user={user} chat={chat} />
                 </>
 

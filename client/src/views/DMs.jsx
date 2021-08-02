@@ -9,7 +9,7 @@ import io from 'socket.io-client';
 
 const DMs = (props) => {
 
-    const { user, setChat, newDM, currentChat, setNewDM } = props;
+    const { user, setChat, newDM, currentChat, setNewDM, setBlur } = props;
     const [allChats, setAllChats] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
@@ -29,7 +29,6 @@ const DMs = (props) => {
                 i++;
             }
             if(hasUser) {
-                console.log(allChats);
                 setAllChats(prevChats => [...prevChats, data])
             }
 
@@ -79,7 +78,6 @@ const DMs = (props) => {
                 }
             )
             .catch(err => {
-                console.log('fail');
                 console.log(err);
             })
     }, [setNewDM, socket, user])
@@ -87,7 +85,7 @@ const DMs = (props) => {
     return (
 
         <div className="dm-main">
-            <DMsSearch/>
+            <DMsSearch user={user} setBlur={setBlur} setNewDM={setNewDM}/>
             <div className="dm-allChats">
                 <div className="dm-newMsg">
                     <h4>DIRECT MESSAGES</h4>

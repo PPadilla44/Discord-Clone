@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import "../css/DMs.css"
 import axios from 'axios';
 import SearchAll from "../components/SearchAll"
@@ -6,17 +6,39 @@ import SearchAll from "../components/SearchAll"
 
 const DMsSearch = (props) => {
 
-    const [display, setDisplay] = useState(false);
+    const { setBlur, user, setNewDM } = props;
 
+    const [displaySearch, setDisplaySearch] = useState(false);
 
+    const wrapperRef = useRef(null)
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        };
+    }, []);
+
+    const handleClickOutside = (e) => {
+        const { current: wrap } = wrapperRef;
+        if(wrap && !wrap.contains(e.target)) {
+            setDisplaySearch(false);
+            setBlur(false);
+        }
+    }
+
+    const handleShowInput = () => {
+        setDisplaySearch(!displaySearch);
+        setBlur(true)
+    }
 
     return (
-        <div className="dm-searchBar">
-            {display && <SearchAll/>}
+        <div className="dm-searchBar" ref={wrapperRef}>
+            {displaySearch && <SearchAll user={user} setDisplaySearch={setDisplaySearch} setBlur={setBlur} setNewDM={setNewDM}/>}
             <form>
                 <input type="text"
-                onClick={() => setDisplay(!display)}
+                onClick={handleShowInput}
                 placeholder="Find or Start a conversation"
                 style={{width: "220px"}}
                 className="dm-Search" />

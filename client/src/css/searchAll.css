@@ -7,7 +7,7 @@
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    z-index: 101;
+    z-index: 999;
 }
 
 .searchAll-mainWrapper {
@@ -45,7 +45,6 @@
 
 .searchAll-oneOption:hover {
     background-color: rgb(58, 59, 61);
-
     cursor: pointer;
 }
 
