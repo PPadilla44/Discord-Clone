@@ -40,7 +40,10 @@ const UserSchema = new mongoose.Schema(
     },
     onlineStatus : {
         type: String,
-    }
+    },
+    chats : {
+        type: Array,
+    },
 },
     { timestamps: true },
 );

@@ -22,7 +22,7 @@ const MessageInput = (props) => {
             chatId
         })
             .then(res => {
-                socket.emit("send_to_sender", res.data)
+                socket.emit("send_to_server", res.data)
                 setContents("")
             })
             .catch(err => console.log(err))

@@ -26,7 +26,8 @@ const io = require('socket.io')(server, {cors : true});
 io.on('connection', socket => {
 
 
-    socket.on('send_to_sender', data => {
+    socket.on('send_to_server', data => {
+        socket.broadcast.emit('new_message_from_server_save', data)
         socket.broadcast.emit('new_message_from_server', data)
     })
 

@@ -4,13 +4,15 @@ import axios from 'axios';
 
 const FriendsNav = (props) => {
 
-    const { user } = props;
+    const { user, displayList, setDisplayList } = props;
     const [loaded, setLoaded] = useState(false);
     const [friendName, setFriendName] = useState("")
+    const [inputName, setInputName] = useState("")
+
     const { friends: userFriends } = user;
-    const [display, setDisplay] = useState(false);
-    const [options, setOptions] = useState([]);
-    const [search, setSearch] = useState("");
+
+    const [success, setSuccesss] = useState(-2);
+
 
     const showAddNewChat = () => {
         if(loaded === true) {
@@ -18,28 +20,31 @@ const FriendsNav = (props) => {
         } else setLoaded(true)
     }
 
-    useEffect(() => {
-        axios.get('http://localhost:8000/api/users')
-            .then(res => {
-                setOptions(res.data)
-            })
-            .catch(err => console.log(err))
-        console.log(options);
-    },[])
+
 
 
     const onSubmitHandler = (e) => {
         e.preventDefault()
+
+        if(inputName.length < 1) {
+            setSuccesss(-1)
+            return;
+        }
         
-        axios.get('http://localhost:8000/api/users/' + friendName)
+        axios.get('http://localhost:8000/api/users/' + inputName)
             .then(res => {
-                let { firstName, lastName, _id, userName, hexColor } = res.data;
+                if(!res.data) { 
+                    setSuccesss(0)
+                    return; 
+                }
+                let { firstName, lastName, _id, userName, hexColor, onlineStatus } = res.data;
                 let data = {
                     _id,
                     firstName,
                     lastName,
                     userName,
-                    hexColor
+                    hexColor,
+                    onlineStatus
                 }
                 let friend = data;
                 let friends = userFriends;
@@ -49,7 +54,9 @@ const FriendsNav = (props) => {
                         friends
                     })
                         .then(res => {
-                            console.log(res);
+                            setSuccesss(1)
+                            setFriendName(inputName);
+                            setInputName("");
                         })
                         .catch(err => console.log(err))
                 }
@@ -79,10 +86,10 @@ const FriendsNav = (props) => {
                     <h4>Friends</h4>
                 </div>
                 <div className="flexRow friendsNavStart">
-                    <h4 className="chatNavButtons-friends">Online</h4>
-                    <h4 className="chatNavButtons-friends">All</h4>
-                    <h4 className="chatNavButtons-friends">Pending</h4>
-                    <h4 className="chatNavButtons-friends">Blocked</h4>
+                    <h4 onClick={(e) => setDisplayList("Online")} style={displayList === 'online' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Online</h4>
+                    <h4 onClick={(e) => setDisplayList("All")} style={displayList === 'all' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">All</h4>
+                    <h4 onClick={(e) => setDisplayList("Pending")} style={displayList === 'pending' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Pending</h4>
+                    <h4 onClick={(e) => setDisplayList("Blocked")} style={displayList === 'blocked' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Blocked</h4>
                     <h4 className="chatNavButtons-friends" id="addFriendBtn" onClick={showAddNewChat}>Add Friend</h4>
                 </div>
             </div>
@@ -111,19 +118,17 @@ const FriendsNav = (props) => {
             {loaded &&
                 <div className="addNewFriend">
                     <h3>ADD FRIEND</h3>
-                    <p>You can add a friend with their Discord Tag. It's cAsE sEnSiTiVe</p>
+                    { success === -2 && <p>You can add a friend with their Discord Tag. It's cAsE sEnSiTiVe</p>}
+                    { success === -1 && <p style={ { color: "hsl(359,calc(var(--saturation-factor, 1)*82.6%),59.4%)" } }>Don't just submit nothing bro</p>}
+                    { success === 0 && <p style={ { color: "hsl(359,calc(var(--saturation-factor, 1)*82.6%),59.4%)" } }>Hm, didnt work. Double check the capitalization, spelling, any spaces, and numbers are correct.</p>}
+                    { success === 1 && <p style={ { color: "green" } }>Success! Your friend request to <strong>{friendName}</strong> was sent</p>}
+                    
                     <form onSubmit={onSubmitHandler}>
                         <p>
-                            <input autoComplete={"off"} type="text" onClick={(() => setDisplay(!display))} name="sendFriendRequest" placeholder="Enter a Username#0000" onChange={(e) => setFriendName(e.target.value)} value={friendName}  />
+                            <input  autoComplete={"off"} type="text"  name="sendFriendRequest" placeholder="Enter a Username#0000" onChange={(e) => setInputName(e.target.value)} value={inputName}  />
                             <input type="submit" value="Send Friend Request" />
                         </p>
-                        {display && options.map((v, i) => {
-                            return (
-                                <div key={i}>
-                                    <span>{v.userName}</span>
-                                </div>
-                            )
-                        })}
+
                     </form>
                 </div>
             }

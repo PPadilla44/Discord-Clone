@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef} from 'react';
 import "../css/DMs.css"
-import axios from 'axios';
 import SearchAll from "../components/SearchAll"
 
 

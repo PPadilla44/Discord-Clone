@@ -1,19 +1,51 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
-import { Link, navigate } from '@reach/router';
 import '../css/FriendsList.css';
 
 
 
 const FriendsList =  (props) =>{
 
-    const { user, users:allUsers, setChat, joinChat } = props;
+    const { user, setChat, joinChat, displayList } = props;
+
+    const [displayUsers, setDisplayUsers ] = useState(user.friends);
+    const [displayText, setDisplayText ] = useState("ALL FRIENDS")
+
+    useEffect(() => {
+
+        if(displayList === 'Online') {
+            // Online status === online
+            let onlineUsers = [];
+            for(const f of user.friends) {
+                if(f.onlineStatus === "Online") {
+                    onlineUsers.push(f);
+                }
+            }
+            setDisplayUsers(onlineUsers);
+            setDisplayText("ONLINE")
+        } else if( displayList === 'All') {
+            // all friends            
+            setDisplayUsers(user.friends);
+            setDisplayText("ALL FRIENDS")
+        } else if (displayList === 'Pending') {
+            // pending friend requests
+            setDisplayUsers([])
+            setDisplayText("PENDING")
+        } else if (displayList === 'Blocked') {
+            // blocked users 
+            setDisplayUsers([])
+            setDisplayText("BLOCKED")
+        }
+
+    }, [displayList])
 
 
     return (
+        <>
+            <p className="TEST">{displayText} - {displayUsers.length}</p>
+
         <div>
-            {allUsers.map((user,i) =>{
-                return <div className="peopleListItemContainer inner" key={i}>
+            {displayUsers.map((user,i) =>{
+                return <div className="peopleListItemContainer inner" onClick={() => joinChat(user)} key={i}>
                     <div className="peopleListItemContents">
                         <div className="peopleListItemUserInfo">
                             <div className="peopleListItemAvatar">
@@ -49,6 +81,7 @@ const FriendsList =  (props) =>{
                 </div>
             })}
         </div>
+        </>
     )
 
 }

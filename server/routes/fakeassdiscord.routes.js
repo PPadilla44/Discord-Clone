@@ -11,11 +11,14 @@ module.exports = function (app) {
     app.post("/api/login", UserController.login);
     app.post("/api/logout", UserController.logout);
 
+
     // this route now has to be authenticated
     app.get("/api/users", UserController.getAll);
+    app.get(`/api/users/one/:_id`, UserController.getOne)
     app.get("/api/users/loggedin", authenticate, UserController.getLoggedInUser);
     app.get("/api/users/:userName", UserController.getOneByUserName);
     app.put("/api/users/:_id", UserController.updateOne);
+    app.get("/api/users/chats/:_id", UserController.getUserChats)
 
     // Message Controller
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import '../css/Chat.css';
 import ChatNav from "../components/ChatNav";
 import MessageInput from "../components/MessageInput";
@@ -12,6 +12,8 @@ const Chat = (props) => {
 
 
     const { user, setChat, chat, setNewDM } = props;
+    const [displayList, setDisplayList] = useState("all")
+
 
     return (
         <div className="chat-main">
@@ -25,8 +27,8 @@ const Chat = (props) => {
                 </>
                 :
                 <>
-                    <FriendsNav user={user} />
-                    <UserList setNewDM={setNewDM} setChat={setChat} user={user} />
+                    <FriendsNav displayList={displayList} setDisplayList={setDisplayList} user={user} />
+                    <UserList setNewDM={setNewDM} setChat={setChat} displayList={displayList} user={user} />
                 </>
             }
 

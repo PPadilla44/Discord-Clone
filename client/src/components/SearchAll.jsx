@@ -65,7 +65,7 @@ const SearchAll = (props) => {
                         <input
                             className="searchAll-input"
                             type="text"
-                            placeholder="Where would you like to go?" 
+                            placeHolder="Where would you like to go?" 
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             />
@@ -82,7 +82,11 @@ const SearchAll = (props) => {
                                     </div>
                                 )
                             })}
-                        <p style={{ borderTop : "0.25px solid gray"}}><span>PROTIP:</span> Start searches with @ # ! * to narrow results</p>
+
+                        <div className="searchAll-bottomText">
+                            <h3 style={ { color : "hsl(139, calc(var(--saturation-factor, 1) * 47.3%), 43.9%)" } }>PROTIP:</h3>
+                            <h3 className="searchAll-startSearches" >Start searches with @ # ! * to narrow results</h3>
+                        </div>
 
                         </div>
                     </div>

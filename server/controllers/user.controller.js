@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const { Chat } = require('../models/chat.model');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -84,25 +85,25 @@ module.exports = {
 
         User.findById(decodedJWT.payload._id)
             .then((user) => res.json(user))
-            .catch((err) => res.json(err));
+            .catch((err) => res.status(400).json(err));
     },
 
     getAll: (req, res) => {
         User.find()
             .then((users) => res.json(users))
-            .catch((err) => res.json(err));
+            .catch((err) => res.status(400).json(err));
     },
 
     getOne: (req, res) => {
-        User.findOne({ _id: req.params.id })
+        User.findOne({ _id: req.params._id })
             .then((user) => res.json(user))
-            .catch((err) => res.json(err));
+            .catch((err) => res.status(400).json(err));
     },
 
     getOneByUserName: (req, res) => {
         User.findOne({userName: req.params.userName})
             .then((user) => res.json(user))
-            .catch((err) => res.json(err));
+            .catch((err) => res.status(400).json(err));
     },
 
 
@@ -111,6 +112,33 @@ module.exports = {
             .then(updatedOne => {
                 res.json(updatedOne)
             })
-            .catch(err => res.status(400).json(err))
+            .catch((err) => res.status(400).json(err));
     },
+
+    getUserChats: (req, res) => {
+        User.findOne({ _id: req.params._id })
+            .then((user) => {
+                
+                const promises = [];
+
+                for(const _id of user.chats) {
+                    promises.push(
+                        Chat.findOne( { _id } )
+                            .then(chat => chat)
+                            .catch(err => res.status(400).json(err))
+                    )
+                }
+
+                Promise.all(promises)
+                    .then((p) => {
+                        console.log(p);
+                        res.json(p)
+                    })
+
+
+            })
+            .catch((err) => res.status(400).json(err));
+
+    }
+
 };
