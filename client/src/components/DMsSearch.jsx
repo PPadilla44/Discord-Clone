@@ -36,13 +36,13 @@ const DMsSearch = (props) => {
         <div className="dm-searchBar" ref={wrapperRef}>
             {displaySearch && <SearchAll user={user} setDisplaySearch={setDisplaySearch} setBlur={setBlur} setNewDM={setNewDM}/>}
             <form>
-                <input type="text"
+                <input 
+                type="text"
                 onClick={handleShowInput}
                 placeholder="Find or Start a conversation"
                 style={{width: "220px"}}
                 className="dm-Search" />
             </form>
-
         </div>
     )
 }

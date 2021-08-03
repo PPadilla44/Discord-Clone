@@ -35,14 +35,12 @@ const Messages = (props) => {
 
 
         socket.on('new_message_from_server_save', data => {
-            console.log("POP");
             axios.get(`http://localhost:8000/api/chats/${data.chatId}`)
                 .then(res => {
                     
                     let { messages : chatMessages} = res.data;
                     chatMessages.push(data);
 
-                    console.log("ONCE");
                     axios.put(`http://localhost:8000/api/chats/${data.chatId}`,{
                         messages : chatMessages
                     })

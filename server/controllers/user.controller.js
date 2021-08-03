@@ -131,7 +131,6 @@ module.exports = {
 
                 Promise.all(promises)
                     .then((p) => {
-                        console.log(p);
                         res.json(p)
                     })
 

@@ -15,9 +15,7 @@ const FriendsNav = (props) => {
 
 
     const showAddNewChat = () => {
-        if(loaded === true) {
-            setLoaded(false)
-        } else setLoaded(true)
+        setLoaded(!loaded)
     }
 
 
@@ -70,6 +68,10 @@ const FriendsNav = (props) => {
 
     }, [loaded])
 
+    const handleDisplayList = (list) =>{
+        setDisplayList(list);
+        setLoaded(false)
+    }
 
 
     return (
@@ -86,10 +88,10 @@ const FriendsNav = (props) => {
                     <h4>Friends</h4>
                 </div>
                 <div className="flexRow friendsNavStart">
-                    <h4 onClick={(e) => setDisplayList("Online")} style={displayList === 'online' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Online</h4>
-                    <h4 onClick={(e) => setDisplayList("All")} style={displayList === 'all' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">All</h4>
-                    <h4 onClick={(e) => setDisplayList("Pending")} style={displayList === 'pending' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Pending</h4>
-                    <h4 onClick={(e) => setDisplayList("Blocked")} style={displayList === 'blocked' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Blocked</h4>
+                    <h4 onClick={() => handleDisplayList("Online")} style={displayList === 'online' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Online</h4>
+                    <h4 onClick={() => handleDisplayList("All")} style={displayList === 'all' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">All</h4>
+                    <h4 onClick={() => handleDisplayList("Pending")} style={displayList === 'pending' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Pending</h4>
+                    <h4 onClick={() => handleDisplayList("Blocked")} style={displayList === 'blocked' ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }} className="chatNavButtons-friends">Blocked</h4>
                     <h4 className="chatNavButtons-friends" id="addFriendBtn" onClick={showAddNewChat}>Add Friend</h4>
                 </div>
             </div>
