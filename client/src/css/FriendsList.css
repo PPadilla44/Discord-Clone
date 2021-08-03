@@ -31,7 +31,7 @@
     height: 20px;
 }
 
-.peopleListItemButton {
+.peopleListItemButton, .peopleListItemButtonPend, .peopleListItemButtonPendConfirm {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -40,6 +40,19 @@
     justify-content: center;
     margin-left: 10px;
     background-color: rgb(47, 49, 54);
+    color: rgb(185,187,190);
+}
+
+.peopleListItemButtonPend:hover {
+    color: red;
+}
+
+.peopleListItemButtonPendConfirm:hover {
+    color: green;
+}
+
+.peopleListItemButton:hover {
+    color: white;
 }
 
 .peopleListItemActions {
@@ -103,4 +116,8 @@
     background-color: rgb(58, 62 ,68);
     border-top: none;
     border-radius: 10px;
+}
+
+.inner:hover .peopleListItemButton, .inner:hover .peopleListItemButtonPend, .inner:hover .peopleListItemButtonPendConfirm {
+    background-color: rgb(35, 37, 41);
 }

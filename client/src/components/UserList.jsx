@@ -33,6 +33,10 @@ const UserList = (props) => {
     // }, [])
 
     const joinChat = useCallback( async (e) => {
+
+
+
+
         let secondUserId = e._id;
         console.log(secondUserId);
         let users = [ user, e]

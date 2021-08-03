@@ -37,14 +37,14 @@ io.on('connection', socket => {
 
     socket.on('disconnect', data => {
         if(data === 'transport close') {
-            console.log(data,"dsadsa");
+            // console.log(data,"dsadsa");
         }
         socket.broadcast.emit('user_offline', "OFFLINE" );
     })
 
     socket.on('user_online', data => {
-        console.log(data);
-        console.log("ONINE");
+        // console.log(data);
+        // console.log("ONINE");
         
     })
     
