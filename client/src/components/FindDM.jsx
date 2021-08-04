@@ -20,7 +20,6 @@ const FindDM = (props) => {
 
     const joinChat = useCallback( async (e) => {
 
-        setDisplayDMSearch(false);
 
         let secondUserId = e._id;
         let users = [ user, e]
@@ -28,31 +27,42 @@ const FindDM = (props) => {
         await axios.get(`http://localhost:8000/api/chats/user/single/${ user._id}/${ secondUserId }`)
             .then(res => {
                 if((res.data).length > 0) {
-                    if(!user.chats.includes(res.data[0]._id)) {
-                        axios.put(`http://localhost:8000/api/users/${user._id}`, {
-                            chats: [...user.chats, res.data[0]._id],
-                        })
-                            .then(res => console.log(res.data))
-                            .catch(err => console.log(err));
-                    }
                     navigate(`/channels/@me/${res.data[0]._id}`);
                 }
+
                 else {
                     axios.post('http://localhost:8000/api/chats',{
                         users,
                     })
                         .then(res => {
+                            let chatId = res.data._id;
+                            axios.get(`http://localhost:8000/api/users/one/${secondUserId}`)
+                                .then(res => {
+                                    let friendChats = res.data.chats;
+                                        axios.put(`http://localhost:8000/api/users/${secondUserId}`, {
+                                            chats: [...friendChats, chatId],
+                                        })
+                                        .then(res => console.log(res.data))
+                                        .catch(err => console.log(err));
+                                    })
+
+                            axios.put(`http://localhost:8000/api/users/${user._id}`, {
+                                chats: [...user.chats, chatId],
+                            })
+                                .then(res => console.log(res.data))
+                                .catch(err => console.log(err));
                             socket.emit('new_dm', res.data)
                             setNewDM(res.data)
-                            navigate(`/channels/@me/${res.data._id}`) })
+                            navigate(`/channels/@me/${chatId}`) })
                         .catch(err => console.log(err));
                     }
                 }
             )
             .catch(err => {
+                console.log('fail');
                 console.log(err);
             })
-    }, [setNewDM, socket, user])
+    }, [])
 
 
     return (

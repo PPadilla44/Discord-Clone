@@ -120,3 +120,14 @@ body {
         background-position: 0 0
     }
 }
+
+.skipReg {
+    margin-top: 30px;
+    background-color: darkred;
+}
+
+.skipReg:hover {
+    color: rgb(168, 168, 168);
+    background-color: red;
+    box-shadow: 0 0 10px black;
+}

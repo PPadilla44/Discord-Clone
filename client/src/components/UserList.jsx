@@ -16,29 +16,12 @@ const UserList = (props) => {
     const [socket] = useState(() => io(':8000'));
 
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:8000/api/users')
-    //     .then(res => {
-    //         let userList = res.data;
-    //         let userCount = 0;
 
-    //         for(let i = 0; i < userList.length; i++) {
-    //             userCount++
-    //         }
-    //         setCount(userCount - 1);
-    //         setUsers(userList.filter(singleUser => singleUser._id !== user._id ))
-    //         setLoaded(true)
-    //     })
-    //     .catch(err => console.log(err))
-    // }, [])
 
     const joinChat = useCallback( async (e) => {
 
 
-
-
         let secondUserId = e._id;
-        console.log(secondUserId);
         let users = [ user, e]
 
         await axios.get(`http://localhost:8000/api/chats/user/single/${ user._id}/${ secondUserId }`)

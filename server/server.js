@@ -6,6 +6,7 @@ const port = 8000;
 const cors = require('cors')
 const jwt = require("jsonwebtoken");
 const cookieParser = require('cookie-parser');
+const chatController = require('./controllers/chat.controller');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(express.json());
@@ -27,7 +28,9 @@ io.on('connection', socket => {
 
 
     socket.on('send_to_server', data => {
-        socket.broadcast.emit('new_message_from_server_save', data)
+        // socket.broadcast.emit('new_message_from_server_save', data)
+        chatController.getOneChatServer(data)
+
         socket.broadcast.emit('new_message_from_server', data)
     })
 

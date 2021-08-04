@@ -15,6 +15,15 @@ module.exports = {
             .catch(err => res.status(400).json(err));
     },
 
+    getOneChatServer: (data) => {
+        Chat.findOne({_id : data.chatId })
+        .then(chat => {
+            console.log(chat);
+            return chat;
+        })
+        .catch(err => console.log(err));
+    },
+
     updateOneChat: (req, res) => {
         Chat.findOneAndUpdate({ _id: req.params._id }, req.body, { new: true })
             .then(updatedChat => {

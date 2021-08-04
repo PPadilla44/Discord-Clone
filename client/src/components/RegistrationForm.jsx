@@ -39,6 +39,8 @@ const RegistrationForm = (props) => {
             setErrors(errorResponse);
         });
     };
+
+
     
 
     return (
@@ -79,7 +81,8 @@ const RegistrationForm = (props) => {
                 <input type="hidden" name="friends" value={friends} />
                 <input type="submit" value = "Sign up!" className="button"/>
             </form>
-            
+
+
         </div>
         
     )
