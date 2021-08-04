@@ -19,7 +19,7 @@ require('./routes/fakeassdiscord.routes')(app);
 
 
 const server = app.listen(port, () => 
-console.log('The server is all UwU"d up on port 8000'));
+console.log('The server is up on port 8000'));
 
 const io = require('socket.io')(server, {cors : true});
 
@@ -38,8 +38,6 @@ io.on('connection', socket => {
     })
 
     socket.on('send_friend_request', ()=> {
-        console.log("Receieved");
-        
         socket.broadcast.emit('receive_friend_request')
     })
 

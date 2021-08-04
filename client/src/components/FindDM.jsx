@@ -15,7 +15,7 @@ const FindDM = (props) => {
     const [socket] = useState(() => io(':8000'));
 
     useEffect(()  => {
-        setOptions(user.friends.filter(friend => friend.pending[0] === false))
+        setOptions(user.friends.filter(friend => friend.pending === undefined))
     },[user.friends])
 
     const joinChat = useCallback( async (e) => {

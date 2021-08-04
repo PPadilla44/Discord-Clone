@@ -36,12 +36,17 @@ const FriendsNav = (props) => {
             return;
         }
 
+
         axios.get('http://localhost:8000/api/users/' + inputName)
             .then(res => {
                 if (!res.data) {
                     setSuccesss(0)
                     return;
                 }
+                if(user.friends.filter(friend => friend.userName === inputName).length > 0) {
+                    setSuccesss(-3);
+                    return;
+                } 
                 let { firstName, lastName, _id, userName, hexColor, onlineStatus, friends: otherFriends } = res.data;
                 let data = {
                     _id,
@@ -154,6 +159,7 @@ const FriendsNav = (props) => {
             {loaded &&
                 <div className="addNewFriend">
                     <h3>ADD FRIEND</h3>
+                    {success === -3 && <p style={{ color: "hsl(359,calc(var(--saturation-factor, 1)*82.6%),59.4%)" }}>You've already have <strong>{friendName}</strong> as a friend</p>}
                     {success === -2 && <p>You can add a friend with their Discord Tag. It's cAsE sEnSiTiVe</p>}
                     {success === -1 && <p style={{ color: "hsl(359,calc(var(--saturation-factor, 1)*82.6%),59.4%)" }}>Don't just submit nothing bro</p>}
                     {success === 0 && <p style={{ color: "hsl(359,calc(var(--saturation-factor, 1)*82.6%),59.4%)" }}>Hm, didnt work. Double check the capitalization, spelling, any spaces, and numbers are correct.</p>}

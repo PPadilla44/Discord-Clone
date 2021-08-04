@@ -13,19 +13,20 @@ const FriendsList =  (props) =>{
     const [socket] = useState(() => io(':8000'));
 
     const [ userFriends, setUserfriends] = useState(user.friends)
-    const [displayUsers, setDisplayUsers ] = useState(userFriends.filter(friend => friend.pending[0] === false));
+    const [displayUsers, setDisplayUsers ] = useState(userFriends.filter(friend => friend.pending === undefined));
     const [displayText, setDisplayText ] = useState("ALL FRIENDS")
+
+    const [displayMore, setDisplayMore] = useState(false)
 
     const [trigger, setTrigger] = useState([])
 
     useEffect(() => {
 
         socket.on('receive_friend_request', () => {
-            console.log("NEW");
             axios.get(`http://localhost:8000/api/users/one/${user._id}`)
                 .then(res => {
-                    console.log(res.data);
                     setUserfriends(res.data.friends)
+                    setTrigger(res.data.friends)
                 })
                 .catch(err => console.log(err))
         })
@@ -38,15 +39,15 @@ const FriendsList =  (props) =>{
 
         if(displayList === 'Online') {
             // Online status === online
-            setDisplayUsers(userFriends.filter(friend => friend.onlineStatus === 'Online' && !friend.pending[0]));
+            setDisplayUsers(userFriends.filter(friend => friend.onlineStatus === 'Online').filter(friend => friend.pending === undefined));
             setDisplayText("ONLINE")
         } else if( displayList === 'All') {
             // all friends            
-            setDisplayUsers(userFriends.filter(friend => friend.pending[0] === false));
+            setDisplayUsers(userFriends.filter(friend => friend.pending === undefined));
             setDisplayText("ALL FRIENDS")
         } else if (displayList === 'Pending') {
             // pending friend requests
-            setDisplayUsers(userFriends.filter(friend => friend.pending[0] === true))
+            setDisplayUsers(userFriends.filter(friend => friend.pending).filter(friend => friend.pending[0] === true))
             setDisplayText("PENDING")
         } else if (displayList === 'Blocked') {
             // blocked users 
@@ -65,10 +66,38 @@ const FriendsList =  (props) =>{
         }
     }, [trigger])
 
+    const acceptRequest = (pend) => {
+
+        let userFriends = displayUsers.filter(friend => friend._id === pend._id);
+        delete userFriends[0].pending;
+
+        axios.put(`http://localhost:8000/api/users/${user._id}`, {
+            friends: userFriends
+        })
+            .then(res => {
+                setUserfriends(res.data.friends);
+                axios.get(`http://localhost:8000/api/users/one/${pend._id}`)
+                    .then(res => {
+                        let userFriends = res.data.friends.filter(friend => friend._id === user._id)
+                        delete userFriends[0].pending;
+
+                        axios.put(`http://localhost:8000/api/users/${pend._id}`, {
+                        friends: userFriends
+                    })
+                        .then(res => {
+                            socket.emit('send_friend_request')
+                        })
+                        .catch(err => console.log(err))
+                })
+                
+                setTrigger(res.data)
+            })
+            .catch(err => console.log(err))
+    }
 
     const cancelRequest = (pend) => {
         
-        let userFriends = user.friends.filter(friend => friend._id !== pend._id)
+        let userFriends = displayUsers.filter(friend => friend._id !== pend._id)
 
         axios.put(`http://localhost:8000/api/users/${user._id}`, {
             friends: userFriends
@@ -82,14 +111,15 @@ const FriendsList =  (props) =>{
                         axios.put(`http://localhost:8000/api/users/${pend._id}`, {
                         friends: userFriends
                     })
-                        .then(res => res)
+                        .then(res => {
+                            socket.emit('send_friend_request')
+                        })
                         .catch(err => console.log(err))
                 })
-
+                
                 setTrigger(res.data)
             })
             .catch(err => console.log(err))
-
     }
 
 
@@ -103,16 +133,16 @@ const FriendsList =  (props) =>{
                     <div className="peopleListItemActions">
                             
 
-                            {user.pending[0] && !user.pending[1] ?
+                            {user.pending ? 
+                                user.pending[0] && !user.pending[1] ?
                                 <div onClick={() => cancelRequest(user)}  className="peopleListItemButtonPend">
                                     <svg className="peopleListPending" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                                         <path fill="currentColor" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path>
                                     </svg>
                                 </div>
-                                :
-                                user.pending[0] && user.pending[1] ?
+                                :                                
                                 <>
-                                    <div className="peopleListItemButtonPendConfirm">
+                                    <div onClick={() => acceptRequest(user)} className="peopleListItemButtonPendConfirm">
                                         <svg className="icon-35-fSh" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                                             <path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d="M8.99991 16.17L4.82991 12L3.40991 13.41L8.99991 19L20.9999 7.00003L19.5899 5.59003L8.99991 16.17Z"></path>
                                         </svg>
@@ -122,25 +152,30 @@ const FriendsList =  (props) =>{
                                             <path fill="currentColor" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path>
                                         </svg>
                                     </div>
-    
-    
                                 </>
+
+                                
                                 :
                                 user.blocked ? <p>Blocked</p>
                                 :
                                 <>
-                                <div className="peopleListItemButton">
-                                    <svg className="peopleListItemIcon"  onClick={() => joinChat(user)} aria-hidden="false" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <div  onClick={() => joinChat(user)} className="peopleListItemButton">
+                                    <svg className="peopleListItemIcon"  aria-hidden="false" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <path fill="currentColor" d="M4.79805 3C3.80445 3 2.99805 3.8055 2.99805 4.8V15.6C2.99805 16.5936 3.80445 17.4 4.79805 17.4H7.49805V21L11.098 17.4H19.198C20.1925 17.4 20.998 16.5936 20.998 15.6V4.8C20.998 3.8055 20.1925 3 19.198 3H4.79805Z"></path>
                                     </svg>
                                 </div>
-                                <div className="peopleListItemButton">
+                                <div onClick={() => setDisplayMore(true)} className="peopleListItemButton">
                                     <svg className="icon-35-fSh" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                                         <g fill="none" fillRule="evenodd">
                                             <path d="M24 0v24H0V0z"></path>
                                             <path fill="currentColor" d="M12 16c1.1045695 0 2 .8954305 2 2s-.8954305 2-2 2-2-.8954305-2-2 .8954305-2 2-2zm0-6c1.1045695 0 2 .8954305 2 2s-.8954305 2-2 2-2-.8954305-2-2 .8954305-2 2-2zm0-6c1.1045695 0 2 .8954305 2 2s-.8954305 2-2 2-2-.8954305-2-2 .8954305-2 2-2z"></path>
                                         </g>
                                     </svg>
+                                    { displayMore && <div onMouseLeave={() => setDisplayMore(false)} className="displayMore">
+                                        <div onClick={() => cancelRequest(user)} className="removeFriend">
+                                            <h3>Remove Friend</h3>
+                                        </div>
+                                    </div>}
                                 </div>
                                 </>}
                 
