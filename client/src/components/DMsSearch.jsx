@@ -11,13 +11,7 @@ const DMsSearch = (props) => {
 
     const wrapperRef = useRef(null)
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-        };
-    }, []);
 
     const handleClickOutside = (e) => {
         const { current: wrap } = wrapperRef;
@@ -31,6 +25,14 @@ const DMsSearch = (props) => {
         setDisplaySearch(!displaySearch);
         setBlur(true)
     }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        };
+    }, []);
 
     return (
         <div className="dm-searchBar" ref={wrapperRef}>

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "../css/Chat.css";
 import axios from 'axios';
+import io from 'socket.io-client';
+
 
 const FriendsNav = (props) => {
 
     const { user, displayList, setDisplayList } = props;
+
+    const [socket] = useState(() => io(':8000'));
+
     const [loaded, setLoaded] = useState(false);
     const [friendName, setFriendName] = useState("")
     const [inputName, setInputName] = useState("")
@@ -15,7 +20,8 @@ const FriendsNav = (props) => {
 
 
     const showAddNewChat = () => {
-        setLoaded(!loaded)
+        setDisplayList("none")
+        setLoaded(true)
     }
 
 
@@ -23,6 +29,7 @@ const FriendsNav = (props) => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault()
+
 
         if (inputName.length < 1) {
             setSuccesss(-1)
@@ -76,6 +83,7 @@ const FriendsNav = (props) => {
                                     setSuccesss(1)
                                     setFriendName(inputName);
                                     setInputName("");
+                                    socket.emit('send_friend_request')
                                 })
                                 .catch(err => console.log(err))
                             

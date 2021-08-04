@@ -15,11 +15,19 @@ module.exports = {
             .catch(err => res.status(400).json(err));
     },
 
-    getOneChatServer: (data) => {
+    getOneChatAndUpdateServer: (data) => {
         Chat.findOne({_id : data.chatId })
         .then(chat => {
-            console.log(chat);
-            return chat;
+            const { messages } = chat;
+            
+            messages.push(data);
+            let pushedData = {
+                messages
+            }
+
+            Chat.findOneAndUpdate( { _id: chat._id }, pushedData, { new: true} )
+                .then(updatedChat => updatedChat)
+                .catch(err => console.log(err))
         })
         .catch(err => console.log(err));
     },

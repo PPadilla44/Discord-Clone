@@ -251,9 +251,12 @@
     width: 440px;
     background-color: #36393F;
     position: absolute;
-    border-radius: 10px;
+    left: 280px;
+    top: 140px;
+    border-radius: 5px;
     border:rgb(36, 35, 35) 1px solid;
     z-index: 999;
+    overflow: hidden;
 }
 
 .FindDM-main h2, .FindDM-main p, .FindDM-input  {

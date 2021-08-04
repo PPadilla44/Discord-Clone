@@ -18,9 +18,9 @@ const SearchAll = (props) => {
 
     useEffect(()  => {
         axios.get(`http://localhost:8000/api/users`)
-            .then(res => setOptions(res.data.filter(({_id}) => _id != user._id )))
+            .then(res => setOptions(res.data.filter(({_id}) => _id !== user._id )))
             .catch(err => console.log(err))
-    },[])
+    },[user._id])
 
 
     const joinChat = useCallback( async (e) => {
@@ -28,29 +28,40 @@ const SearchAll = (props) => {
         setDisplaySearch(false);
         setBlur(false);
 
+
         let secondUserId = e._id;
         let users = [ user, e]
 
         await axios.get(`http://localhost:8000/api/chats/user/single/${ user._id}/${ secondUserId }`)
             .then(res => {
                 if((res.data).length > 0) {
-                    if(!user.chats.includes(res.data[0]._id)) {
-                        axios.put(`http://localhost:8000/api/users/${user._id}`, {
-                            chats: [...user.chats, res.data[0]._id],
-                        })
-                            .then(res => console.log(res.data))
-                            .catch(err => console.log(err));
-                    }
                     navigate(`/channels/@me/${res.data[0]._id}`);
                 }
+
                 else {
                     axios.post('http://localhost:8000/api/chats',{
                         users,
                     })
                         .then(res => {
+                            let chatId = res.data._id;
+                            axios.get(`http://localhost:8000/api/users/one/${secondUserId}`)
+                                .then(res => {
+                                    let friendChats = res.data.chats;
+                                        axios.put(`http://localhost:8000/api/users/${secondUserId}`, {
+                                            chats: [...friendChats, chatId],
+                                        })
+                                        .then(res => console.log(res.data))
+                                        .catch(err => console.log(err));
+                                    })
+
+                            axios.put(`http://localhost:8000/api/users/${user._id}`, {
+                                chats: [...user.chats, chatId],
+                            })
+                                .then(res => console.log(res.data))
+                                .catch(err => console.log(err));
                             socket.emit('new_dm', res.data)
                             setNewDM(res.data)
-                            navigate(`/channels/@me/${res.data._id}`) })
+                            navigate(`/channels/@me/${chatId}`) })
                         .catch(err => console.log(err));
                     }
                 }
@@ -58,7 +69,7 @@ const SearchAll = (props) => {
             .catch(err => {
                 console.log(err);
             })
-    }, [setNewDM, socket, user])
+    }, [setNewDM, socket, user, setBlur, setDisplaySearch])
 
 
     return (

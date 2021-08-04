@@ -28,14 +28,19 @@ io.on('connection', socket => {
 
 
     socket.on('send_to_server', data => {
-        // socket.broadcast.emit('new_message_from_server_save', data)
-        chatController.getOneChatServer(data)
+        chatController.getOneChatAndUpdateServer(data)
 
         socket.broadcast.emit('new_message_from_server', data)
     })
 
     socket.on('new_dm', data => {
         socket.broadcast.emit('show_new_dm', data);
+    })
+
+    socket.on('send_friend_request', ()=> {
+        console.log("Receieved");
+        
+        socket.broadcast.emit('receive_friend_request')
     })
 
     socket.on('disconnect', data => {

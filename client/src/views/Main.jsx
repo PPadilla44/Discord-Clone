@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { navigate } from '@reach/router'
-import io from 'socket.io-client';
 
 import axios from "axios";
 import Icons from "./Icons";
@@ -21,7 +20,6 @@ const Main = (props) => {
     const [chat, setChat] = useState({});
     const [newDM, setNewDM] = useState({});
 
-    const [socket] = useState(() => io(':8000'));
 
 
 

@@ -10,16 +10,17 @@ const FindDM = (props) => {
     const [options, setOptions] = useState([])
     const [search, setSearch] = useState("");
 
+    const [found, setFound] = useState(true);
+
     const [socket] = useState(() => io(':8000'));
 
     useEffect(()  => {
-        axios.get(`http://localhost:8000/api/users`)
-            .then(res => setOptions(res.data.filter(({_id}) => _id != user._id )))
-            .catch(err => console.log(err))
-    },[])
+        setOptions(user.friends.filter(friend => friend.pending[0] === false))
+    },[user.friends])
 
     const joinChat = useCallback( async (e) => {
 
+        setDisplayDMSearch(false)
 
         let secondUserId = e._id;
         let users = [ user, e]
@@ -59,17 +60,40 @@ const FindDM = (props) => {
                 }
             )
             .catch(err => {
-                console.log('fail');
                 console.log(err);
             })
-    }, [])
+    }, [setNewDM, socket, user, setDisplayDMSearch])
+
+    const joinChatHandler = (e) => {
+        e.preventDefault()
+
+        if(search.length < 1) {
+            setFound(false)
+        } else {
+
+        axios.get(`http://localhost:8000/api/users/${search}`)
+            .then(res => {
+                console.log(res.data);
+                if(res.data === null) {
+                    setFound(false);
+                } else {
+                    setFound(true)
+                    // if(user.friends.includes(res.data)) {
+                    // }
+                    joinChat(res.data)
+                }
+            })
+            .catch(err => console.log(err))
+        }
+    }
 
 
     return (
         <div className="FindDM-main">
-            <form className="FindDM-form" action="">
+            <form className="FindDM-form" onSubmit={(e) => joinChatHandler(e)}>
                 <h2>Select Friends</h2>
                 <p>You can add 9 more friends</p>
+                { !found && <h3 style={{color: "red", textAlign : "center"}}>User not found in your friends list</h3> }
                 <input 
                 autoComplete={"off"}
                 autoFocus
@@ -92,6 +116,7 @@ const FindDM = (props) => {
                                     </div>
                                 )
                             })}
+                    {options.length < 1 && <h3 style={{textAlign: "center"}}>Add some friends to send a message</h3>}
                 </div>
                 <div className="FindDM-btn">
                     <input className="FindDM-submit" type="submit" value="Create Group DM" />

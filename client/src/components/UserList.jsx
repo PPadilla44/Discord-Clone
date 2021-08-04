@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState,useCallback} from 'react';
 import '../css/Chat.css';
 import axios from 'axios';
 import FriendsList from './FriendsList';
@@ -9,9 +9,6 @@ import io from 'socket.io-client';
 const UserList = (props) => {
 
     const { user, setChat, setNewDM, displayList } = props;
-    const [ users, setUsers ] = useState();
-    const [ loaded, setLoaded ] = useState(false);
-    const [ count, setCount ] = useState(0);
 
     const [socket] = useState(() => io(':8000'));
 
@@ -59,14 +56,13 @@ const UserList = (props) => {
                 }
             )
             .catch(err => {
-                console.log('fail');
                 console.log(err);
             })
-    }, [])
+    }, [setNewDM, socket, user])
 
     return (
         <div className="peopleListItemContainer">
-            <FriendsList setChat={ setChat } user={user} displayList={displayList} users={ users } joinChat={ joinChat } />
+            <FriendsList setChat={ setChat } user={user} displayList={displayList} joinChat={ joinChat } />
         </div>
     )
 }

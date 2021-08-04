@@ -1,18 +1,38 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
+import io from 'socket.io-client';
+
 import '../css/FriendsList.css';
 
 
 
 const FriendsList =  (props) =>{
 
-    const { user, setChat, joinChat, displayList } = props;
+    const { user, joinChat, displayList } = props;
+
+    const [socket] = useState(() => io(':8000'));
 
     const [ userFriends, setUserfriends] = useState(user.friends)
     const [displayUsers, setDisplayUsers ] = useState(userFriends.filter(friend => friend.pending[0] === false));
     const [displayText, setDisplayText ] = useState("ALL FRIENDS")
 
     const [trigger, setTrigger] = useState([])
+
+    useEffect(() => {
+
+        socket.on('receive_friend_request', () => {
+            console.log("NEW");
+            axios.get(`http://localhost:8000/api/users/one/${user._id}`)
+                .then(res => {
+                    console.log(res.data);
+                    setUserfriends(res.data.friends)
+                })
+                .catch(err => console.log(err))
+        })
+
+
+        return () => socket.disconnect(true)
+    },[socket])
 
     useEffect(() => {
 
@@ -32,9 +52,11 @@ const FriendsList =  (props) =>{
             // blocked users 
             setDisplayUsers([])
             setDisplayText("BLOCKED")
+        } else if (displayList === "none") {
+            setDisplayUsers([])
         }
 
-    }, [displayList])
+    }, [displayList, userFriends])
 
     useEffect(() => {
 
@@ -43,9 +65,10 @@ const FriendsList =  (props) =>{
         }
     }, [trigger])
 
+
     const cancelRequest = (pend) => {
         
-        let userFriends = user.friends.filter(friend => friend._id != pend._id)
+        let userFriends = user.friends.filter(friend => friend._id !== pend._id)
 
         axios.put(`http://localhost:8000/api/users/${user._id}`, {
             friends: userFriends
@@ -54,12 +77,12 @@ const FriendsList =  (props) =>{
                 setUserfriends(res.data.friends);
                 axios.get(`http://localhost:8000/api/users/one/${pend._id}`)
                     .then(res => {
-                        let userFriends = res.data.friends.filter(friend => friend._id != user._id)
+                        let userFriends = res.data.friends.filter(friend => friend._id !== user._id)
 
                         axios.put(`http://localhost:8000/api/users/${pend._id}`, {
                         friends: userFriends
                     })
-                        .then(res => res )
+                        .then(res => res)
                         .catch(err => console.log(err))
                 })
 
@@ -72,7 +95,7 @@ const FriendsList =  (props) =>{
 
     return (
         <>
-            <p className="TEST">{displayText} - {displayUsers.length}</p>
+            {displayList !== "none" && <p className="TEST">{displayText} - {displayUsers.length}</p>}
 
         <div>
             {displayUsers.map((user,i) =>{

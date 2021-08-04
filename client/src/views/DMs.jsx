@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DMsSearch from "../components/DMsSearch";
 import User from "../components/User"
 import FindDM from "../components/FindDM";
@@ -10,7 +10,7 @@ import io from 'socket.io-client';
 
 const DMs = (props) => {
 
-    const { user, setChat, newDM, currentChat, setNewDM, setBlur } = props;
+    const { user, setChat, currentChat, setNewDM, setBlur } = props;
     const [allChats, setAllChats] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
@@ -55,14 +55,13 @@ const DMs = (props) => {
 
         return () => socket.disconnect(true)
 
-    }, [socket])
+    }, [socket, user.userName])
 
 
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/chats/${user._id}`)
             .then(res => {
-                console.log(res.data);
                 if(res.data[0] !== null) {
                     if(res.data.length > 0) {
                         setAllChats(res.data)
@@ -82,7 +81,7 @@ const submitChat = (chat) => {
     navigate(`/channels/@me/${chat._id}`);
 }
 
-const goHome = (e) => {
+const goHome = () => {
     setChat({})
     navigate(`/channels/@me`)
 }
@@ -94,8 +93,9 @@ const removeFromDM = (chat) => {
         chats: tempChats,
     })
         .then(res => {
-            navigate(`/channels/@me`)
-            setChat({})
+            navigate(`/channels/@me`);
+            setChat({});
+            goHome();
         })
         .catch(err => console.log(err))
 }
@@ -106,7 +106,7 @@ return (
         <DMsSearch user={user} setBlur={setBlur} setNewDM={setNewDM} />
 
         <div className="dm-allUsers">
-            <div onClick={(e) => goHome(e)} className="dm-friendsTab" style={!currentChat._id ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }}>
+            <div onClick={goHome} className="dm-friendsTab" style={!currentChat._id ? { backgroundColor: "rgb(57,60,67)", color: "white" } : { backgroundColor: "inherit" }}>
                 <svg style={{ marginRight: "9px" }} x="0" y="0" className="icon-22AiRD" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                     <g fill="none" fillRule="evenodd">
                         <path fill="currentColor" fillRule="nonzero" d="M0.5,0 L0.5,1.5 C0.5,5.65 2.71,9.28 6,11.3 L6,16 L21,16 L21,14 C21,11.34 15.67,10 13,10 C13,10 12.83,10 12.75,10 C8,10 4,6 4,1.5 L4,0 L0.5,0 Z M13,0 C10.790861,0 9,1.790861 9,4 C9,6.209139 10.790861,8 13,8 C15.209139,8 17,6.209139 17,4 C17,1.790861 15.209139,0 13,0 Z" transform="translate(2 4)"></path>
