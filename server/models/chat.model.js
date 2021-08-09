@@ -6,6 +6,9 @@ const ChatSchema = new mongoose.Schema({
     },
     messages: {
         type: Array
+    },
+    newMessage : {
+        type: Boolean
     }
 })
 

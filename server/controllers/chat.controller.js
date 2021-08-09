@@ -3,8 +3,8 @@ const { Chat } = require('../models/chat.model');
 module.exports = {
 
     createNewChat: (req, res) => {
-        const { users, messages } = req.body;
-        Chat.create({ users })
+        const { users, messages, newMessage } = req.body;
+        Chat.create({ users, messages, newMessage })
             .then(chat => res.json(chat))
             .catch(err => res.status(400).json(err));
     },

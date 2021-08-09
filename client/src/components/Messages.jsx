@@ -34,6 +34,11 @@ const Messages = (props) => {
 
         socket.on("new_message_from_server", data => {
             setTrigger(data);
+            axios.put(`http://localhost:8000/api/chats/${data.chatId}`, {
+                newMessage: true
+            })
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
         });
         
 

@@ -177,7 +177,6 @@
 }
 
 
-
 .DMtooltiptext {
     justify-content: space-around;
     font-size: small;
@@ -356,3 +355,14 @@
     border: solid 3px #2F3136;
 }
 
+.newMessageIndicator {
+    height: 10px;
+    width: 10px;
+    background-color: rgba(255, 0, 0, 0.63);
+    z-index: 999;
+    border-radius: 50%;
+    display: flex;
+    margin: 5px 10px 0 0;
+    position: absolute;
+    left: 200px
+}

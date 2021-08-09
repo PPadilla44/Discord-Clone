@@ -30,6 +30,7 @@ const UserList = (props) => {
                 else {
                     axios.post('http://localhost:8000/api/chats',{
                         users,
+                        newMessage: true,
                     })
                         .then(res => {
                             let chatId = res.data._id;
